@@ -6,24 +6,31 @@ YOBO="${YOBO:-$ROOT/yoyo/compiler/yoyo.exe}"
 NAME="$1"
 shift || true
 
+RESEARCH_LIBS="$ROOT/yoyo/lib/fp.ty \
+  $ROOT/yoyo/lib/params.ty \
+  $ROOT/yoyo/lib/indicators.ty \
+  $ROOT/yoyo/lib/perturbation.ty \
+  $ROOT/yoyo/lib/wuwen.ty \
+  $ROOT/yoyo/ternary_signal.ty"
+
 case "$NAME" in
   walk)
     SRC="$ROOT/build/walk_forward.ty"
     OUT="$ROOT/build/walk_forward.exe"
-    cat "$ROOT/yoyo/lib/fp.ty" \
-        "$ROOT/yoyo/lib/indicators.ty" \
-        "$ROOT/yoyo/lib/perturbation.ty" \
-        "$ROOT/yoyo/ternary_signal.ty" \
+    cat $RESEARCH_LIBS \
         "$ROOT/yoyo/research/walk_forward.ty" > "$SRC"
     ;;
   butterfly)
     SRC="$ROOT/build/butterfly_demo.ty"
     OUT="$ROOT/build/butterfly_demo.exe"
-    cat "$ROOT/yoyo/lib/fp.ty" \
-        "$ROOT/yoyo/lib/indicators.ty" \
-        "$ROOT/yoyo/lib/perturbation.ty" \
-        "$ROOT/yoyo/ternary_signal.ty" \
+    cat $RESEARCH_LIBS \
         "$ROOT/yoyo/research/butterfly_demo.ty" > "$SRC"
+    ;;
+  hold)
+    SRC="$ROOT/build/hold_ratio.ty"
+    OUT="$ROOT/build/hold_ratio.exe"
+    cat $RESEARCH_LIBS \
+        "$ROOT/yoyo/research/hold_ratio.ty" > "$SRC"
     ;;
   verify)
     SRC="$ROOT/build/verify_archive.ty"
@@ -31,7 +38,7 @@ case "$NAME" in
     cp "$ROOT/yoyo/research/verify_archive.ty" "$SRC"
     ;;
   *)
-    echo "usage: $0 {walk|butterfly|verify}"
+    echo "usage: $0 {walk|butterfly|hold|verify}"
     exit 1
     ;;
 esac

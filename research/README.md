@@ -21,8 +21,13 @@ make research-walk      # → build/walk_forward.exe（五票）
 make butterfly-demo     # → 蝴蝶效应：1 元扰动翻转决策
 ```
 
-`yoyo/research/walk_forward.ty` 在嵌入的 20 日行情上执行与 `ternary_signal.ty` 相同的**五票**投票（含 `perturbation.ty`），  
-统计买/持/卖次数，**仅用 yoyo.exe 编译**。
+`yoyo/research/walk_forward.ty` 在五票投票后调用 `wuwen.ty`，输出 **state[31] 无问票占比 %**。
+
+```bash
+make hold-ratio       # 平淡市 ~60% 无问 vs 急涨 ~20%，对照文献锚点
+```
+
+文献锚点：`research/archive/literature_anchors.json`；解读见 `yoyo/docs/PRIOR-RESEARCH.md`。
 
 ## 为何不用 Python？
 

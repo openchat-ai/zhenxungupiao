@@ -13,6 +13,7 @@
 | 三进制角色 | 描述**如何表决**，不能预言集体狂飙 |
 | A 股回测 | Sharpe 0.30 &gt; 二元 0.20，但 **corr(信号,次日)≈0.003** |
 | 工具链 | 仅 `yoyo.exe`，无 Python / npm |
+| 无问占比 | `state[31]` 五票持票%；`make hold-ratio` 对照文献 |
 
 ## 三阶段进展
 
@@ -32,9 +33,10 @@ Linux 需 Wine 运行 `yoyo.exe`。
 
 ## 理论
 
-- **[结论一览（推荐先读）](结论.md)** — 实证数字 + 集体一致现象 + 三进制能/不能解释什么  
-- 《[三进制与股票预测](yoyo/docs/THEORY-TERNARY-METAPHYSICS.md)》——完整推导与文献  
-- 存档实证：`research/archive/`；纯 yoyo 验证：`make research-walk`、`make butterfly-demo`
+- **[结论一览（推荐先读）](结论.md)** — 实证数字 + 集体一致 + 无问占比参数  
+- **[前人研究与参数依据](yoyo/docs/PRIOR-RESEARCH.md)** — Fama / Banerjee / Barber-Odean 等  
+- 《[三进制与股票预测](yoyo/docs/THEORY-TERNARY-METAPHYSICS.md)》——完整推导  
+- 存档：`research/archive/`；验证：`make hold-ratio`、`make research-walk`
 
 ## 目录
 
