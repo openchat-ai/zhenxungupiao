@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """通达信协议历史逐笔（可选 Python，非震巽运行时）。
 
+仅抓取 **当年** 交易日（默认 2026-01-01 ~ 今日），不拉更久历史。
+
 依赖：pip install easy-tdx
 输出：research/archive/tick_hist/tick_<code>_<YYYYMMDD>.csv
       字段对齐东财：date,code,time,price,volume,bs
-      bs: 1=买 2=卖 4=中性/其他（TDX 0→1, 1→2, 2/5→4）
 
 用法：
-  fetch_tick_tdx_optional.py [交易日数量]   默认 126（约 6 个月）
-  fetch_tick_tdx_optional.py 63             约 3 个月
-  fetch_tick_tdx_optional.py 126 --force    覆盖已有文件
+  fetch_tick_tdx_optional.py              # 默认当年
+  fetch_tick_tdx_optional.py 2026        # 指定年份
+  fetch_tick_tdx_optional.py 2026 --force # 覆盖已有
 """
 from __future__ import annotations
 
@@ -33,8 +34,6 @@ STOCKS = [
     ("000333", 0),
 ]
 
-DEFAULT_TRADING_DAYS = 126  # ~6 个月
-
 
 def market_enum(mkt: int):
     from easy_tdx import Market
@@ -50,31 +49,39 @@ def bs_map(flag: int) -> int:
     return 4
 
 
-def trading_days(n: int) -> list[int]:
-    d = date.today()
+def trading_days_in_year(year: int) -> list[int]:
+    """当年 1 月 1 日 ~ 今日（含）的交易日。"""
+    start = date(year, 1, 1)
+    end = date.today()
+    if end.year < year:
+        return []
+    d = start
     out: list[int] = []
-    while len(out) < n:
+    while d <= end:
         if d.weekday() < 5:
             out.append(d.year * 10000 + d.month * 100 + d.day)
-        d -= timedelta(days=1)
-    return sorted(out)
+        d += timedelta(days=1)
+    return out
 
 
 def main() -> int:
     args = [a for a in sys.argv[1:] if a != "--force"]
     force = "--force" in sys.argv
-    days = DEFAULT_TRADING_DAYS
+    year = date.today().year
     if args:
-        days = int(args[0])
+        year = int(args[0])
 
     from easy_tdx import MacClient
 
     ARCH.mkdir(parents=True, exist_ok=True)
-    dates = trading_days(days)
+    dates = trading_days_in_year(year)
+    if not dates:
+        print(f"SKIP no trading days for year={year}", flush=True)
+        return 0
+
     total = skipped = empty = failed = 0
     need = len(dates) * len(STOCKS)
-
-    print(f"START tick_hist days={days} stocks={len(STOCKS)} tasks~{need}", flush=True)
+    print(f"START tick_hist year={year} days={len(dates)} stocks={len(STOCKS)} tasks~{need}", flush=True)
 
     with MacClient.from_best_host() as client:
         for code, mkt in STOCKS:
@@ -116,7 +123,7 @@ def main() -> int:
                 time.sleep(0.05)
 
     print(
-        f"DONE tick_hist written={total} skipped={skipped} empty={empty} failed={failed}",
+        f"DONE tick_hist year={year} written={total} skipped={skipped} empty={empty} failed={failed}",
         flush=True,
     )
     return 0

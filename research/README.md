@@ -12,7 +12,7 @@
 | `archive/backtest_v4_summary.json` | **v4 七票+新闻 η+逐笔**（`make research-v4`） |
 | `archive/backtest_v4_recent_*_summary.json` | **近段对照**（`make research-v4-recent`） |
 | `archive/news_daily_eta.csv` | 新闻情绪日表（`make fetch-news`） |
-| `archive/tick_hist/` | **~116 日×8 股**逐笔明细（`make fetch-ticks-tdx-6m`，~167MB） |
+| `archive/tick_hist/` | **2026 年**逐笔明细（`make fetch-ticks-tdx`） |
 | `archive/tick_hist_daily.csv` | 历史逐笔日汇总（`make fetch-ticks-tdx`） |
 | `archive/backtest_v2_by_stock.csv` | v2 分标的 + 动量/均值回归对照 |
 | `archive/BACKTEST_V2_REPORT.md` | v2 人类可读报告 |

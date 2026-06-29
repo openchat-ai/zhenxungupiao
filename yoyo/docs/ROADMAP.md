@@ -25,7 +25,7 @@ make signal           # 仅决策核心
 make research-walk    # 纯 yoyo 五票投票演示
 make research-verify  # 实证锚点校验
 make fetch-ticks        # 东财当日逐笔 → archive/tick_*.csv
-make fetch-ticks-tdx-6m  # 通达信 ~6 月逐笔 → archive/tick_hist/
+make fetch-ticks-tdx      # 通达信逐笔，仅 2026 年 → archive/tick_hist/
 make fetch-news         # AKShare/OpenBB 同源新闻 → news_daily_eta.csv
 make extend-hist        # 延伸日线至今日（可选 Python）
 make research-v4        # 七票 + 新闻 η + 历史逐笔回测

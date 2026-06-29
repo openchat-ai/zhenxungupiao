@@ -12,7 +12,7 @@ RUN = if command -v wine >/dev/null 2>&1; then wine $(1) $(2) $(3); else $(1) $(
   research-verify-v2 research-verify-v3 \
   butterfly-demo hold-ratio psychology-demo \
   fetch-news news-embed news-demo extend-hist \
-  fetch-ticks fetch-ticks-tdx fetch-ticks-tdx-3m fetch-ticks-tdx-6m tick-embed tick-demo
+  fetch-ticks fetch-ticks-tdx tick-embed tick-demo
 
 all: stock stock-gui
 
@@ -108,14 +108,8 @@ fetch-ticks:
 	@./scripts/fetch_ticks_all.sh
 
 fetch-ticks-tdx:
-	@chmod +x scripts/fetch_ticks_tdx_all.sh scripts/fetch_tick_tdx_optional.py
-	@./scripts/fetch_ticks_tdx_all.sh $(or $(DAYS),126)
-
-fetch-ticks-tdx-3m:
-	@$(MAKE) fetch-ticks-tdx DAYS=63
-
-fetch-ticks-tdx-6m:
-	@$(MAKE) fetch-ticks-tdx DAYS=126
+	@chmod +x scripts/fetch_ticks_tdx_all.sh scripts/fetch_tick_tdx_optional.py scripts/prune_tick_hist.sh
+	@./scripts/fetch_ticks_tdx_all.sh $(or $(YEAR),2026)
 
 tick-embed:
 	@chmod +x scripts/tick_to_embed.sh
