@@ -14,6 +14,7 @@ cat \
   "$ROOT/yoyo/lib/indicators.ty" \
   "$ROOT/yoyo/lib/perturbation.ty" \
   "$ROOT/yoyo/lib/psychology.ty" \
+  "$ROOT/yoyo/lib/aggressive.ty" \
   "$ROOT/yoyo/lib/wuwen.ty" \
   "$ROOT/yoyo/ternary_signal.ty" \
   "$ROOT/yoyo/lib/chart.ty" \

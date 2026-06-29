@@ -7,7 +7,9 @@ MERGE     := $(BUILD)/yoyo_merged.ty
 
 RUN = if command -v wine >/dev/null 2>&1; then wine $(1) $(2) $(3); else $(1) $(2) $(3); fi
 
-.PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean research-walk research-verify research-v2 research-v3 research-verify-v2 research-verify-v3 butterfly-demo hold-ratio psychology-demo
+.PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean \
+  research-walk research-verify research-v2 research-v3 research-verify-v2 research-verify-v3 \
+  butterfly-demo hold-ratio psychology-demo fetch-ticks tick-embed tick-demo
 
 all: stock stock-gui
 
@@ -72,6 +74,19 @@ research-verify-v3:
 psychology-demo:
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh psychology
+
+fetch-ticks:
+	@chmod +x scripts/fetch_ticks_all.sh scripts/fetch_tick_eastmoney.sh
+	@./scripts/fetch_ticks_all.sh
+
+tick-embed:
+	@chmod +x scripts/tick_to_embed.sh
+	@mkdir -p build
+	@./scripts/tick_to_embed.sh research/archive/tick_daily_summary.csv build/tick_embed.ty $(or $(CODE),600519)
+
+tick-demo: tick-embed
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh tick
 
 butterfly-demo:
 	@chmod +x scripts/build_research.sh

@@ -1,0 +1,9 @@
+date,code,active_buy_pct,active_sell_pct,n_ticks,source
+2026-06-29,000001,56.29,43.71,4642,eastmoney_push2
+2026-06-29,000333,44.64,55.36,4742,eastmoney_push2
+2026-06-29,000858,52.17,47.83,4731,eastmoney_push2
+2026-06-29,600036,52.25,47.75,4729,eastmoney_push2
+2026-06-29,600519,52.10,47.90,4572,eastmoney_push2
+2026-06-29,600900,50.25,49.75,4740,eastmoney_push2
+2026-06-29,601012,49.95,50.05,4711,eastmoney_push2
+2026-06-29,601318,50.05,49.95,4741,eastmoney_push2

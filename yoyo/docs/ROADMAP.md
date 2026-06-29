@@ -11,6 +11,7 @@
 | 5 | 时事扰动 η + 蝴蝶效应 `perturbation.ty` | ✅ v2 |
 | 6 | 无问占比 + 文献参数 `wuwen.ty` `params.ty` | ✅ v2.1 |
 | 7 | 心理学第 6 票 `psychology.ty` | ✅ v3 |
+| 8 | 逐笔主动买卖第 7 票 `aggressive.ty` + 东财抓取 | ✅ |
 
 ## 构建
 
@@ -22,8 +23,8 @@ make stock-gui-elf    # ELF 版（需 bootstrap 后）
 make signal           # 仅决策核心
 make research-walk    # 纯 yoyo 五票投票演示
 make research-verify  # 实证锚点校验
-make research-v3        # 六票+心理学全量回测
-make psychology-demo    # 恐慌 vs FOMO 演示
+make fetch-ticks        # 东财当日逐笔 → archive/tick_*.csv
+make tick-demo          # 第 7 票主动买卖演示
 make research-verify-v3 # v3 锚点
 make hold-ratio         # 无问占比：平淡 vs 急涨 + 文献锚
 make butterfly-demo   # 蝴蝶效应：1 元扰动翻转决策
