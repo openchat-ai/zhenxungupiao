@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/indicators.ts","./src/main.tsx","./src/stocks.ts","./src/ternary.ts","./src/types.ts","./src/components/KLineChart.tsx","./src/components/SignalBadge.tsx","./src/components/StockCard.tsx","./src/hooks/useFavorites.ts","./src/hooks/useLongPress.ts","./src/hooks/useSwipe.ts"],"version":"5.9.3"}

@@ -1,0 +1,32 @@
+{
+  "name": "zhenxun-stock",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "震巽股票 — 极简选股 App，核心买卖信号基于 yoyo 平衡三进制引擎",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc -b --noEmit",
+    "yoyo:build": "node yoyo/compiler/yoyo.cjs yoyo/ternary_signal.ty build/ternary_signal.exe"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.1",
+    "vite": "^5.4.1"
+  }
+}
