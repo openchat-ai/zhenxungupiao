@@ -37,8 +37,13 @@ case "$NAME" in
     OUT="$ROOT/build/verify_archive.exe"
     cp "$ROOT/yoyo/research/verify_archive.ty" "$SRC"
     ;;
+  verify-v2)
+    SRC="$ROOT/build/verify_v2.ty"
+    OUT="$ROOT/build/verify_v2.exe"
+    cp "$ROOT/yoyo/research/verify_v2.ty" "$SRC"
+    ;;
   *)
-    echo "usage: $0 {walk|butterfly|hold|verify}"
+    echo "usage: $0 {walk|butterfly|hold|verify|verify-v2}"
     exit 1
     ;;
 esac

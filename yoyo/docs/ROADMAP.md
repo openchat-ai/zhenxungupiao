@@ -21,7 +21,9 @@ make stock-gui-elf    # ELF 版（需 bootstrap 后）
 make signal           # 仅决策核心
 make research-walk    # 纯 yoyo 五票投票演示
 make research-verify  # 实证锚点校验
-make hold-ratio      # 无问占比：平淡 vs 急涨 + 文献锚
+make research-v2        # 八股全量 v2 回测 → archive/backtest_v2_*
+make research-verify-v2 # v2 锚点
+make hold-ratio         # 无问占比：平淡 vs 急涨 + 文献锚
 make butterfly-demo   # 蝴蝶效应：1 元扰动翻转决策
 ```
 
@@ -30,7 +32,8 @@ make butterfly-demo   # 蝴蝶效应：1 元扰动翻转决策
 - `docs/PHASE2-FLOAT.md` — 浮点 opcode
 - `docs/PHASE3-ELF.md` — ELF64 后端
 - `docs/PHASE4-GUI.md` — GUI opcode + 配色
-- `docs/PRIOR-RESEARCH.md` — **前人成果与可调参数**
+- `docs/PRIOR-RESEARCH.md` — 前人成果与可调参数
+- `docs/QUANT-STRATEGIES.md` — **经典量化策略与盈利逻辑**
 - `docs/THEORY-TERNARY-METAPHYSICS.md` — 三进制与股票预测（含 archive 实证）
 - `research/archive/` — 固化回测数据（零 Python 运行时）
 

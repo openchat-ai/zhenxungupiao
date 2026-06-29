@@ -7,7 +7,7 @@ MERGE     := $(BUILD)/yoyo_merged.ty
 
 RUN = if command -v wine >/dev/null 2>&1; then wine $(1) $(2) $(3); else $(1) $(2) $(3); fi
 
-.PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean research-walk research-verify butterfly-demo hold-ratio
+.PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean research-walk research-verify research-v2 research-verify-v2 butterfly-demo hold-ratio
 
 all: stock stock-gui
 
@@ -52,6 +52,14 @@ research-walk:
 research-verify:
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh verify
+
+research-v2:
+	@chmod +x scripts/backtest_v2.sh
+	@./scripts/backtest_v2.sh
+
+research-verify-v2:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh verify-v2
 
 butterfly-demo:
 	@chmod +x scripts/build_research.sh
