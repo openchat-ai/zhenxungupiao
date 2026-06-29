@@ -12,7 +12,7 @@ RUNEXE = if command -v wine >/dev/null 2>&1; then wine $(1); else $(1); fi
 
 .PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean \
   research-walk research-verify research-v2-yoyo research-v5-yoyo research-v5-tri-validate \
-  research-verify-v2 research-verify-v3 verify-tri \
+  research-verify-v2 research-verify-v3 verify-tri signal-today \
   butterfly-demo hold-ratio psychology-demo \
   fetch-news news-demo extend-hist \
   fetch-ticks fetch-ticks-tdx tick-demo
@@ -97,6 +97,10 @@ verify-tri-v5:
 	  $(call RUNEXE,$(BUILD)/verify_tri.exe) || exit 1; \
 	done
 	@echo "OK flow_v5_*.tri ×$(words $(CODES))"
+
+# 八股最新 买/持/卖 一览（读 .tri 末日，给「今晚就想看见信号」用）
+signal-today:
+	@python3 scripts/signal_today.py
 
 research-verify-v2:
 	@chmod +x scripts/build_research.sh
