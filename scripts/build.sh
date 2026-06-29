@@ -1,28 +1,24 @@
 #!/bin/sh
-# 合并 yoyo 模块为单一 .ty（无链接器、无外部库），供 yoyo.exe 一次编译。
 set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OUT="$ROOT/build/stock_app.ty"
-YOBO="$ROOT/yoyo/compiler/yoyo.exe"
-mkdir -p "$ROOT/build"
+NAME="$1"
+YOBO="${YOBO:-$ROOT/yoyo/compiler/yoyo.exe}"
+OUT_TY="$ROOT/build/${NAME}.ty"
+OUT_EXE="$ROOT/build/${NAME}.exe"
+ENTRY="$ROOT/yoyo/${NAME}.ty"
 
+mkdir -p "$ROOT/build"
 cat \
   "$ROOT/yoyo/lib/fp.ty" \
   "$ROOT/yoyo/lib/indicators.ty" \
+  "$ROOT/yoyo/lib/chart.ty" \
   "$ROOT/yoyo/ternary_signal.ty" \
-  "$ROOT/yoyo/stock_app.ty" \
-  > "$OUT"
+  "$ENTRY" \
+  > "$OUT_TY"
+echo "Wrote $OUT_TY"
 
-echo "Wrote $OUT"
-
-if [ -x "$YOBO" ] || command -v wine >/dev/null 2>&1; then
-  EXE="$ROOT/build/stock_app.exe"
-  if command -v wine >/dev/null 2>&1; then
-    wine "$YOBO" "$OUT" "$EXE"
-  else
-    "$YOBO" "$OUT" "$EXE"
-  fi
-  echo "Compiled $EXE"
+if command -v wine >/dev/null 2>&1; then
+  wine "$YOBO" "$OUT_TY" "$OUT_EXE" && echo "Built $OUT_EXE"
 else
-  echo "Skip compile: need Windows or wine to run yoyo.exe"
+  echo "Skip compile: install Wine to run yoyo.exe on Linux"
 fi

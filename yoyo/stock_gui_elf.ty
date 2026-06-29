@@ -1,0 +1,19 @@
+; ELF64 版 GUI App（需 bootstrap 后的 yoyo_next.exe 编译）
+A2 01
+
+30 64 0A
+30 65 0B
+30 66 0C
+30 67 0D
+30 68 0E
+30 69 0F
+30 6A 0E
+30 6B 0D
+30 6C 0C
+30 6D 0B
+
+41 C8
+41 20
+41 30
+41 e0
+FF
