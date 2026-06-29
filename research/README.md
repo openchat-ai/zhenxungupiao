@@ -8,7 +8,7 @@
 
 | 文件 | 说明 |
 |------|------|
-| `archive/backtest_v2_summary.json` | **v2 五票全量回测汇总**（`make research-v2`） |
+| `archive/backtest_v3_summary.json` | **v3 六票+心理学**（`make research-v3`） |
 | `archive/backtest_v2_by_stock.csv` | v2 分标的 + 动量/均值回归对照 |
 | `archive/BACKTEST_V2_REPORT.md` | v2 人类可读报告 |
 | `archive/backtest_by_stock.csv` | 分标的绩效 |
@@ -33,5 +33,5 @@ make butterfly-demo     # 蝴蝶效应
 震巽股票坚持 **yoyo 三进制一条道**：
 
 - Python = 二进制生态里的脚本层，与 React/Capacitor 同属「外部库时代」
-- 实证结论已存档；逻辑验证在 `.ty` 里完成
-- 全量重跑需将 CSV 行情编入 `.ty` 或扩展 yoyo 的 `50` LoadFile + 浮点 opcode（Phase 2）
+- 全量 v2 重算：`make research-v2`（`scripts/backtest_v2.awk` 读 `hist_*.csv`）
+- 单根 K 线逻辑验证在 `.ty` 里完成（`make research-walk`）

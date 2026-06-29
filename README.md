@@ -14,7 +14,7 @@
 | A 股回测 | Sharpe 0.30 &gt; 二元 0.20，但 **corr(信号,次日)≈0.003** |
 | 工具链 | 仅 `yoyo.exe`，无 Python / npm |
 | 无问占比 | `state[31]`；全量曲线 `make research-v2` |
-| v2 全量回测 | `make research-v2` → `research/archive/backtest_v2_*` |
+| v3 心理学 | `make psychology-demo`；全量 `make research-v3` |
 
 ## 三阶段进展
 
@@ -36,7 +36,8 @@ Linux 需 Wine 运行 `yoyo.exe`。
 
 - **[结论一览（推荐先读）](结论.md)** — 实证数字 + 集体一致 + 无问占比参数  
 - **[前人研究与参数依据](yoyo/docs/PRIOR-RESEARCH.md)** — Fama / Banerjee / Barber-Odean 等  
-- **[经典量化策略：为什么能赚钱](yoyo/docs/QUANT-STRATEGIES.md)** — 动量 / 均值回归 / v2 对照  
+- **[经典量化策略](yoyo/docs/QUANT-STRATEGIES.md)** — 动量 / 均值回归为何能赚钱  
+- **[心理学与行为金融](yoyo/docs/PSYCHOLOGY.md)** — 损失厌恶 / FOMO 第 6 票  
 - 《[三进制与股票预测](yoyo/docs/THEORY-TERNARY-METAPHYSICS.md)》——完整推导  
 - 存档：`research/archive/`；验证：`make hold-ratio`、`make research-walk`
 

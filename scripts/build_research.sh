@@ -10,6 +10,7 @@ RESEARCH_LIBS="$ROOT/yoyo/lib/fp.ty \
   $ROOT/yoyo/lib/params.ty \
   $ROOT/yoyo/lib/indicators.ty \
   $ROOT/yoyo/lib/perturbation.ty \
+  $ROOT/yoyo/lib/psychology.ty \
   $ROOT/yoyo/lib/wuwen.ty \
   $ROOT/yoyo/ternary_signal.ty"
 
@@ -37,13 +38,24 @@ case "$NAME" in
     OUT="$ROOT/build/verify_archive.exe"
     cp "$ROOT/yoyo/research/verify_archive.ty" "$SRC"
     ;;
+  psychology)
+    SRC="$ROOT/build/psychology_demo.ty"
+    OUT="$ROOT/build/psychology_demo.exe"
+    cat $RESEARCH_LIBS \
+        "$ROOT/yoyo/research/psychology_demo.ty" > "$SRC"
+    ;;
+  verify-v3)
+    SRC="$ROOT/build/verify_v3.ty"
+    OUT="$ROOT/build/verify_v3.exe"
+    cp "$ROOT/yoyo/research/verify_v3.ty" "$SRC"
+    ;;
   verify-v2)
     SRC="$ROOT/build/verify_v2.ty"
     OUT="$ROOT/build/verify_v2.exe"
     cp "$ROOT/yoyo/research/verify_v2.ty" "$SRC"
     ;;
   *)
-    echo "usage: $0 {walk|butterfly|hold|verify|verify-v2}"
+    echo "usage: $0 {walk|butterfly|hold|psychology|verify|verify-v2|verify-v3}"
     exit 1
     ;;
 esac
