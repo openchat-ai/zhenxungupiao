@@ -13,4 +13,7 @@ node_modules/
 
 # 若本地误装 npm
 package-lock.json
+
+# 回测原始日线缓存（可本地再生）
+research/output/hist_*.csv
 *.tsbuildinfo

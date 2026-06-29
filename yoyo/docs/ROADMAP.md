@@ -24,6 +24,7 @@ make signal           # 仅决策核心
 - `docs/PHASE2-FLOAT.md` — 浮点 opcode
 - `docs/PHASE3-ELF.md` — ELF64 后端
 - `docs/PHASE4-GUI.md` — GUI opcode + 配色
+- `docs/THEORY-TERNARY-METAPHYSICS.md` — **三进制与股票预测的玄学关系**（理论扩充）
 
 ## 零依赖
 
