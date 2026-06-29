@@ -10,7 +10,8 @@
 |------|------|
 | `archive/backtest_v3_summary.json` | **v3 六票+心理学**（`make research-v3`） |
 | `archive/backtest_v4_summary.json` | **v4 七票+新闻 η+逐笔**（`make research-v4`） |
-| `archive/backtest_v4_recent_*_summary.json` | **近段对照**（`make research-v4-recent`） |
+| `archive/backtest_v5_compare_summary.json` | **尾盘 vs 否决**（`make research-v5-compare`） |
+| `archive/tick_tail_daily.csv` | 尾盘 14:30–15:00 主动买% |
 | `archive/news_daily_eta.csv` | 新闻情绪日表（`make fetch-news`） |
 | `archive/tick_hist/` | **2026 年**逐笔明细（`make fetch-ticks-tdx`） |
 | `archive/tick_hist_daily.csv` | 历史逐笔日汇总（`make fetch-ticks-tdx`） |

@@ -1,0 +1,21 @@
+{
+  "version": "v5_flow_compare",
+  "generated_at": "2026-06-29T17:12:57Z",
+  "window": "2026 tick archive only",
+  "v4_mean_return": -0.083962,
+  "tail_mean_return": -0.0869901,
+  "veto_mean_return": -0.0782391,
+  "v4_corr_nextday": -0.0257444,
+  "tail_corr_nextday": -0.0306974,
+  "veto_corr_nextday": 0.00518625,
+  "v4_corr_nextopen": -0.118726,
+  "tail_corr_nextopen": -0.120031,
+  "veto_corr_nextopen": -0.093947,
+  "v4_corr_flow_nextopen": 0.023936,
+  "tail_corr_flow_nextopen": -0.006437,
+  "veto_corr_flow_nextopen": 0.023936,
+  "v4_beats_buyhold": 6,
+  "tail_beats_buyhold": 6,
+  "veto_beats_buyhold": 6,
+  "veto_mean_veto_pct": 0.166304
+}
