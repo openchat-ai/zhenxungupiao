@@ -8,7 +8,7 @@ MERGE     := $(BUILD)/yoyo_merged.ty
 RUN = if command -v wine >/dev/null 2>&1; then wine $(1) $(2) $(3); else $(1) $(2) $(3); fi
 
 .PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean \
-  research-walk research-verify research-v2 research-v2-yoyo research-v3 research-v4 research-v4-recent research-v5-compare \
+  research-walk research-verify research-v2 research-v2-yoyo tri-archive research-v3 research-v4 research-v4-recent research-v5-compare \
   research-verify-v2 research-verify-v3 \
   butterfly-demo hold-ratio psychology-demo \
   fetch-news news-embed news-demo extend-hist \
@@ -62,12 +62,17 @@ research-v2:
 	@chmod +x scripts/backtest_v2.sh
 	@./scripts/backtest_v2.sh
 
-# 纯 yoyo v2 回测（Phase 10，读 input.ky；完整 Sharpe/八股汇总待补）
+# 一次性：hist CSV → signal_*.tri 三进制存档（仅导出，运行时只读 .tri）
+tri-archive:
+	@chmod +x scripts/hist_to_tri_all.sh
+	@./scripts/hist_to_tri_all.sh
+
+# 纯 yoyo v2 回测（读 input.ky = .tri 三进制档，无 CSV 解析）
 research-v2-yoyo:
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh backtest-v2
-	@test -f research/archive/hist_600519.csv
-	@cp research/archive/hist_600519.csv input.ky
+	@test -f research/archive/signal_600519.tri || $(MAKE) tri-archive
+	@cp research/archive/signal_600519.tri input.ky
 	@if command -v wine >/dev/null 2>&1; then wine $(BUILD)/backtest_v2.exe; else $(BUILD)/backtest_v2.exe; fi
 
 research-v3:

@@ -17,7 +17,7 @@ RESEARCH_LIBS="$ROOT/yoyo/lib/fp.ty \
   $ROOT/yoyo/ternary_signal.ty"
 
 BACKTEST_LIBS="$ROOT/yoyo/lib/mem.ty \
-  $ROOT/yoyo/lib/csv.ty"
+  $ROOT/yoyo/lib/tri_io.ty"
 
 case "$NAME" in
   walk)
@@ -76,7 +76,7 @@ case "$NAME" in
   backtest-v2)
     SRC="$ROOT/build/backtest_v2.ty"
     OUT="$ROOT/build/backtest_v2.exe"
-    cat $RESEARCH_LIBS $BACKTEST_LIBS \
+    cat "$ROOT/yoyo/lib/fp.ty" $BACKTEST_LIBS \
         "$ROOT/yoyo/research/backtest_v2.ty" > "$SRC"
     ;;
   *)

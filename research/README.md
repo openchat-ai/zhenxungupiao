@@ -15,7 +15,7 @@
 | `archive/news_daily_eta.csv` | 新闻情绪日表（`make fetch-news`） |
 | `archive/tick_hist/` | **2026 年**逐笔明细（`make fetch-ticks-tdx`） |
 | `archive/tick_hist_daily.csv` | 历史逐笔日汇总（`make fetch-ticks-tdx`） |
-| `archive/backtest_v2_by_stock.csv` | v2 分标的 + 动量/均值回归对照 |
+| `archive/signal_*.tri` | **v2 三进制信号档**（`make tri-archive`，运行时直读 trit） |
 | `archive/BACKTEST_V2_REPORT.md` | v2 人类可读报告 |
 | `archive/backtest_by_stock.csv` | 分标的绩效 |
 | `archive/BACKTEST_REPORT.md` | 人类可读报告 |

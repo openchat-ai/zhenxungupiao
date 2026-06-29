@@ -13,18 +13,26 @@
 | 7 | 心理学第 6 票 `psychology.ty` | ✅ v3 |
 | 8 | 逐笔主动买卖第 7 票 `aggressive.ty` + 东财抓取 | ✅ |
 | 9 | OpenBB 新闻 η + easy_tdx 历史逐笔 + v4 七票回测 | ✅ |
-| 10 | **纯 yoyo 回测**（LoadFile + csv.ty，替代 awk） | 🚧 骨架已建 |
+| 10 | **纯 yoyo 回测**（`.tri` 三进制档 + `tri_io.ty`，无 CSV） | 🚧 v2 单股可读 |
 
-### Phase 10 迁移边界
+### Phase 10：三进制存档（`.tri`）
+
+导出一次（`make tri-archive`），运行时 **LoadFile → 逐字节 trit**，无需 CSV/浮点解析：
+
+```
+[TRI\1][n u16][n×signal][n×next_ret]
+trit: 0/1/2  卖/持/买 或 跌/平/涨
+```
 
 | 层 | 现状 | 目标 |
 |----|------|------|
 | 七票决策 | ✅ `lib/*.ty` | 已纯 yoyo |
-| v2–v5 全量回测 | `scripts/backtest_v*.awk` | `research/backtest_v*.ty` + `make research-v2-yoyo` |
-| 数据抓取 | `fetch_*.sh`（curl） | 保留为可选 export，不进运行时 |
-| 编译拼接 | `build_research.sh` | 可收敛为 Makefile `cat` + `yoyo.exe` |
+| v2–v5 全量回测 | `scripts/backtest_v*.awk` | 读 `signal_*.tri` + `tri_io.ty` |
+| hist 导出 | `make tri-archive`（一次性） | CSV→`.tri`，不进运行时 |
+| 数据抓取 | `fetch_*.sh`（curl） | 保留为可选 export |
 
-**卡点**：`LoadFile` 现仅认 `input.ky`（str_idx=0）；CSV 浮点解析需 `mem.ty`+`csv.ty` 补全；组合 Sharpe/JSON 需 `float_runtime.ty` 或定点近似。
+**已解决**：CSV 浮点解析 → 改为三进制字节档。  
+**待补**：八股汇总、Sharpe（可继续用 trit 同向率或定点）、v4/v5 逐笔 trit 列。
 
 ## 构建
 

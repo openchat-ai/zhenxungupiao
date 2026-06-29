@@ -1,46 +1,47 @@
 ; ==============================================================================
-;  backtest_v2.ty — 纯 yoyo v2 回测入口（读 input.ky = 单股 hist CSV）
+;  backtest_v2.ty — 纯 yoyo v2 回测（读 .tri 三进制存档，无 CSV）
 ; ------------------------------------------------------------------------------
-;  用法（Windows / Wine）：
-;    cp research/archive/hist_600519.csv input.ky
-;    yoyo.exe build/backtest_v2.ty build/backtest_v2.exe
-;    build/backtest_v2.exe
+;  用法：
+;    make tri-archive
+;    cp research/archive/signal_600519.tri input.ky
+;    make research-v2-yoyo
 ;
-;  输出：state[60]=n_days, state[61]=末信号 trit；完整 Sharpe/JSON 见 Phase 10c
-;  对齐：lib/indicators.ty + perturbation.ty + wuwen.ty + ternary_signal.ty
+;  输出：state[38]=同向计数  state[39]=样本数  state[3A]=同向×1000/n
 ; ==============================================================================
 
-; LoadFile input.ky (str_idx=0) → state[0A]=ptr, state[0B]=size
 50 0A 00
 60 08 0A
 60 09 0B
 
-; 预分配价格数组（最多 2500 日 × 4 字节）
-30 40 9C40
-41 E0
+41 F4
 
-; 解析 CSV → state[23] 数组, state[24]=n
-41 EA
+30 30 00
+30 38 00
+30 39 00
 
-; 演示：若有数据，把末 10 日收盘价装入 state[64..6D] 并跑七票
-; （完整 walk-forward 循环在 Phase 10c；此处仅验证 LoadFile + 库链接）
-30 64 0A
-30 65 0B
-30 66 0C
-30 67 0D
-30 68 0E
-30 69 0F
-30 6A 0E
-30 6B 0D
-30 6C 0C
-30 6D 0B
+40 B0
+65 30 24
+76 B1
+73 B0
+70 B1
+41 F5
+41 F6
+65 32 01
+71 B2
+41 F7
+68 38 33
+66 39
+40 B2
+66 30
+70 B0
 
-41 C8
-41 D1
-41 20
-41 30
-
-; state[60]=n, state[61]=signal
-60 60 24
-60 61 22
+40 B1
+30 3A 00
+65 39 3A
+71 B3
+60 3B 38
+60 3C 39
+41 66
+60 3A 50
+40 B3
 FF
