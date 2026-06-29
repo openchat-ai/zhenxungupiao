@@ -1,34 +1,31 @@
-# 震巽股票 — 实证研究
+# 实证数据存档（零 Python）
 
-可复现的平衡三进制策略回测，数据来自开源 [AkShare](https://github.com/akfamily/akshare)。
+本目录数据为 **2018–2024 A 股八股回测** 的一次性导出结果，已固化入库。  
+**工具链不要求 Python**；读取结论只需打开 JSON/CSV，或用 yoyo 编译演示程序。
 
-## 运行
-
-```bash
-pip install -r research/requirements.txt
-python3 research/backtest_ternary.py
-```
-
-产出：
+## 文件
 
 | 文件 | 说明 |
 |------|------|
-| `output/backtest_summary.json` | 汇总指标 |
-| `output/backtest_by_stock.csv` | 分标的明细 |
-| `output/BACKTEST_REPORT.md` | 可读报告 |
+| `archive/backtest_summary.json` | 汇总：Sharpe、corr、持有态占比等 |
+| `archive/backtest_by_stock.csv` | 分标的绩效 |
+| `archive/BACKTEST_REPORT.md` | 人类可读报告 |
 
-## 策略定义（与 `ternary_signal.ty` 一致）
+数据来源：[AkShare](https://github.com/akfamily/akshare) `stock_zh_a_hist`（qfq），导出后不再依赖该库。
 
-四指标各产出 trit ∈ {−1, 0, +1}：
+## 纯 yoyo 复现（投票逻辑）
 
-1. SMA(5) vs SMA(20) 符号  
-2. 收盘价 vs SMA(10) 符号  
-3. RSI(14)：&lt;35 → +1，&gt;65 → −1，否则 0  
-4. MACD 柱符号  
+```bash
+make research-walk    # → build/walk_forward.exe
+```
 
-`signal = sign(Σ trit)`；交易规则：+1 满仓，−1 空仓，0 维持仓位。
+`yoyo/research/walk_forward.ty` 在嵌入的 20 日行情上执行与 `ternary_signal.ty` 相同的四票投票，  
+统计买/持/卖次数，**仅用 yoyo.exe 编译**。
 
-## 数据说明
+## 为何不用 Python？
 
-- 标的：8 只 A 股蓝筹（2018-01-01 — 2024-12-31，前复权 qfq）
-- 剔除收盘价 ≤0 或单日涨跌 &gt;50% 的异常序列
+震巽股票坚持 **yoyo 三进制一条道**：
+
+- Python = 二进制生态里的脚本层，与 React/Capacitor 同属「外部库时代」
+- 实证结论已存档；逻辑验证在 `.ty` 里完成
+- 全量重跑需将 CSV 行情编入 `.ty` 或扩展 yoyo 的 `50` LoadFile + 浮点 opcode（Phase 2）

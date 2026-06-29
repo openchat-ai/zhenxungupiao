@@ -1,8 +1,23 @@
 # 三进制与股票预测：象数传统、计算史与 A 股实证
 
-> 理论扩充 v2.0 · 震巽股票  
-> 本文在象数/哲学框架之外，补充**可核验**的计算史、文献依据与 **AkShare 开源数据回测**。  
-> 复现命令：`python3 research/backtest_ternary.py` → 见 `research/output/`。
+> 理论扩充 v2.1 · 震巽股票  
+> 本文在象数/哲学框架之外，补充**可核验**的计算史、文献依据与 **A 股实证数据**。  
+> **工具链仅 yoyo.exe**：实证汇总见 `research/archive/`；逻辑演示 `make research-walk`；锚点校验 `make research-verify`。
+
+---
+
+## 零 Python 原则
+
+震巽股票拒绝「二进制时代」的外部脚本层（React、npm、**Python** 同属此类）。
+
+| 层次 | 允许 | 不允许 |
+|------|------|--------|
+| 决策 / 回测逻辑 | **`.ty` + `yoyo.exe`** | Python / Node 运行时 |
+| 大规模行情 | `research/archive/*.csv` 固化开源数据 | 构建时依赖 AkShare |
+| 实证汇总 | `research/archive/*.json` 存档 | 每次 clone 后跑 pip |
+
+2018–2024 八股回测曾用 AkShare **一次性导出**，结果已写入 `research/archive/`；  
+复现结论**读存档即可**；投票逻辑用 `yoyo/research/walk_forward.ty` 编译验证。
 
 ---
 
@@ -94,10 +109,11 @@
 ### 3.1 方法与复现
 
 ```
-数据源：AkShare stock_zh_a_hist（前复权 qfq）
+数据源：AkShare stock_zh_a_hist（前复权 qfq）— 已导出至 research/archive/
 区间：2018-01-01 — 2024-12-31
-标的：贵州茅台、平安银行、中国平安、招商银行、五粮液、隆基绿能、长江电力、美的集团
-脚本：research/backtest_ternary.py
+标的：8 只 A 股蓝筹（见 archive/backtest_by_stock.csv）
+逻辑验证：make research-walk   # 纯 yoyo，walk_forward.ty
+锚点校验：make research-verify # 嵌入常量与 archive 一致
 ```
 
 **信号生成**（与 `ternary_signal.ty` / 原 `indicators` 设计一致）：
@@ -125,7 +141,7 @@ signal     = sign(trit_ma + trit_trend + trit_rsi + trit_macd)
 | 600900 | 长江电力 | 24.5% | 17.8% | **206.7%** | 1.3% |
 | 000333 | 美的集团 | 20.9% | 9.4% | 88.6% | 1.0% |
 
-完整 CSV：`research/output/backtest_by_stock.csv`
+完整 CSV：`research/archive/backtest_by_stock.csv`
 
 ### 3.3 信号是否有预测力？
 
@@ -265,10 +281,12 @@ signal     = sign(trit_ma + trit_trend + trit_rsi + trit_macd)
 
 | 文件 | 内容 |
 |------|------|
-| `research/backtest_ternary.py` | 回测脚本 |
-| `research/output/backtest_summary.json` | 机器可读汇总 |
-| `research/output/backtest_by_stock.csv` | 分标的表 |
-| `research/output/BACKTEST_REPORT.md` | 简要报告 |
+| `yoyo/research/walk_forward.ty` | 纯 yoyo 投票演示 |
+| `yoyo/research/verify_archive.ty` | 实证锚点常量 |
+| `research/archive/backtest_summary.json` | 机器可读汇总 |
+| `research/archive/backtest_by_stock.csv` | 分标的表 |
+| `research/archive/BACKTEST_REPORT.md` | 简要报告 |
+| `research/archive/hist_*.csv` | 固化行情（开源数据存档） |
 | `yoyo/ternary_signal.ty` | 决策核心 |
 | `yoyo/lib/indicators.ty` | 指标投票 |
 
