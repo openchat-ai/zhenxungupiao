@@ -4,20 +4,21 @@ YOBO      := yoyo/compiler/yoyo.exe
 YOBO_NEXT := build/yoyo_next.exe
 BUILD     := build
 MERGE     := $(BUILD)/yoyo_merged.ty
+CODES     := 000001 000333 000858 600036 600519 600900 601012 601318
+CODE      ?= 600519
 
 RUN = if command -v wine >/dev/null 2>&1; then wine $(1) $(2) $(3); else $(1) $(2) $(3); fi
+RUNEXE = if command -v wine >/dev/null 2>&1; then wine $(1); else $(1); fi
 
 .PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean \
-  research-walk research-verify research-v2 research-v2-yoyo tri-archive tri-archive-v5 \
-  research-v5-yoyo research-v5-tri-validate research-v3 research-v4 research-v4-recent research-v5-compare \
-  research-verify-v2 research-verify-v3 \
+  research-walk research-verify research-v2-yoyo research-v5-yoyo research-v5-tri-validate \
+  research-verify-v2 research-verify-v3 verify-tri \
   butterfly-demo hold-ratio psychology-demo \
-  fetch-news news-embed news-demo extend-hist \
-  fetch-ticks fetch-ticks-tdx tick-embed tick-demo
+  fetch-news news-demo extend-hist \
+  fetch-ticks fetch-ticks-tdx tick-demo
 
 all: stock stock-gui
 
-# ── 编译器自举（Phase 2/3/4 补丁）──
 merge:
 	@chmod +x scripts/merge_compiler.sh
 	@./scripts/merge_compiler.sh
@@ -29,7 +30,6 @@ bootstrap: merge
 
 compiler: bootstrap
 
-# ── App 目标 ──
 stock:
 	@chmod +x scripts/build.sh
 	@./scripts/build.sh stock_app
@@ -59,52 +59,44 @@ research-verify:
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh verify
 
-research-v2:
-	@chmod +x scripts/backtest_v2.sh
-	@./scripts/backtest_v2.sh
-
-# 一次性：hist CSV → signal_*.tri 三进制存档（仅导出，运行时只读 .tri）
-tri-archive:
-	@chmod +x scripts/hist_to_tri_all.sh
-	@./scripts/hist_to_tri_all.sh
-
-# 纯 yoyo v2 回测（读 input.ky = .tri 三进制档，无 CSV 解析）
-research-v2-yoyo:
+# 纯 yoyo v2（signal_*.tri，无 CSV/awk）
+research-v2-yoyo: verify-tri
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh backtest-v2
-	@test -f research/archive/signal_600519.tri || $(MAKE) tri-archive
-	@cp research/archive/signal_600519.tri input.ky
-	@if command -v wine >/dev/null 2>&1; then wine $(BUILD)/backtest_v2.exe; else $(BUILD)/backtest_v2.exe; fi
+	@cp research/archive/signal_$(CODE).tri input.ky
+	@$(call RUNEXE,$(BUILD)/backtest_v2.exe)
 
-tri-archive-v5:
-	@chmod +x scripts/hist_to_tri_v5_all.sh
-	@./scripts/hist_to_tri_v5_all.sh
-
-research-v5-tri-validate: tri-archive-v5
-	@python3 scripts/tri_v5_validate.py
-
-research-v5-yoyo:
+# 纯 yoyo v5 三版对照（flow_v5_*.tri）
+research-v5-yoyo: verify-tri-v5
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh backtest-v5
-	@test -f research/archive/flow_v5_600519.tri || $(MAKE) tri-archive-v5
-	@cp research/archive/flow_v5_600519.tri input.ky
-	@if command -v wine >/dev/null 2>&1; then wine $(BUILD)/backtest_v5_compare.exe; else $(BUILD)/backtest_v5_compare.exe; fi
+	@cp research/archive/flow_v5_$(CODE).tri input.ky
+	@$(call RUNEXE,$(BUILD)/backtest_v5_compare.exe)
 
-research-v3:
-	@chmod +x scripts/backtest_v3.sh
-	@./scripts/backtest_v3.sh
+# 校验八股 .tri 头 + 打印固化汇总（无 awk/python 回测）
+research-v5-tri-validate: verify-tri-v5
+	@echo "=== backtest_v5_tri_summary.json ==="
+	@cat research/archive/backtest_v5_tri_summary.json
 
-research-v4:
-	@chmod +x scripts/backtest_v4.sh
-	@./scripts/backtest_v4.sh
+verify-tri:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh verify-tri
+	@for c in $(CODES); do \
+	  test -f research/archive/signal_$$c.tri || (echo "missing signal_$$c.tri" && exit 1); \
+	  cp research/archive/signal_$$c.tri input.ky; \
+	  $(call RUNEXE,$(BUILD)/verify_tri.exe) || exit 1; \
+	done
+	@echo "OK signal_*.tri ×$(words $(CODES))"
 
-research-v4-recent:
-	@chmod +x scripts/backtest_v4_recent.sh
-	@./scripts/backtest_v4_recent.sh
-
-research-v5-compare:
-	@chmod +x scripts/backtest_v5_compare.sh
-	@./scripts/backtest_v5_compare.sh
+verify-tri-v5:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh verify-tri
+	@for c in $(CODES); do \
+	  test -f research/archive/flow_v5_$$c.tri || (echo "missing flow_v5_$$c.tri" && exit 1); \
+	  cp research/archive/flow_v5_$$c.tri input.ky; \
+	  $(call RUNEXE,$(BUILD)/verify_tri.exe) || exit 1; \
+	done
+	@echo "OK flow_v5_*.tri ×$(words $(CODES))"
 
 research-verify-v2:
 	@chmod +x scripts/build_research.sh
@@ -118,6 +110,7 @@ psychology-demo:
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh psychology
 
+# ── 以下 fetch 为可选数据刷新，不进 yoyo 回测主路径 ──
 fetch-news:
 	@chmod +x scripts/fetch_news_all.sh scripts/export_news_optional.py
 	@./scripts/fetch_news_all.sh
@@ -126,13 +119,10 @@ extend-hist:
 	@chmod +x scripts/extend_hist_all.sh scripts/export_hist_extend_optional.py
 	@./scripts/extend_hist_all.sh
 
-news-embed:
-	@chmod +x scripts/news_to_embed.sh
-	@mkdir -p build
-	@./scripts/news_to_embed.sh research/archive/news_daily_eta.csv build/news_embed.ty $(or $(CODE),600519)
-
-news-demo: news-embed
+news-demo:
 	@chmod +x scripts/build_research.sh
+	@mkdir -p build
+	@cp yoyo/research/embed/news_$(CODE).ty build/news_embed.ty 2>/dev/null || cp yoyo/research/embed/news_600519.ty build/news_embed.ty
 	@./scripts/build_research.sh news
 
 fetch-ticks:
@@ -143,13 +133,10 @@ fetch-ticks-tdx:
 	@chmod +x scripts/fetch_ticks_tdx_all.sh scripts/fetch_tick_tdx_optional.py scripts/prune_tick_hist.sh
 	@./scripts/fetch_ticks_tdx_all.sh $(or $(YEAR),2026)
 
-tick-embed:
-	@chmod +x scripts/tick_to_embed.sh
-	@mkdir -p build
-	@./scripts/tick_to_embed.sh research/archive/tick_daily_summary.csv build/tick_embed.ty $(or $(CODE),600519)
-
-tick-demo: tick-embed
+tick-demo:
 	@chmod +x scripts/build_research.sh
+	@mkdir -p build
+	@cp yoyo/research/embed/tick_$(CODE).ty build/tick_embed.ty 2>/dev/null || cp yoyo/research/embed/tick_600519.ty build/tick_embed.ty
 	@./scripts/build_research.sh tick
 
 butterfly-demo:

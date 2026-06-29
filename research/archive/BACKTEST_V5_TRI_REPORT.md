@@ -1,6 +1,6 @@
 # v5 三进制对照（flow_v5_*.tri）
 
-生成：`make tri-archive-v5 && make research-v5-tri-validate`
+生成：`make research-v5-tri-validate`
 
 | 模式 | 同向率 | 净胜场 | 跑赢买入持有 |
 |------|--------|--------|--------------|

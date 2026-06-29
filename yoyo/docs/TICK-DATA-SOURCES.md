@@ -75,7 +75,7 @@ make tick-demo            # 七票决策演示
 
 ```
 东财 tick CSV
-    ↓ scripts/tick_to_embed.sh
+    ↓ yoyo/research/embed/tick_*.ty（固化，无 CSV）
 state[50] 主动买占比 %
     ↓ lib/aggressive.ty 第 7 票 → state[16]
 七票 Σ（中性 sum=7）→ state[22]
@@ -84,7 +84,7 @@ state[50] 主动买占比 %
 | state | 含义 |
 |-------|------|
 | 50 | 当日主动买笔数 % |
-| 51 | 新闻情绪分 %（`news_to_embed.sh`） |
+| 51 | 新闻情绪分 %（`yoyo/research/embed/news_*.ty`） |
 | 16 | 第 7 票 trit |
 | 14 | 第 5 票 trit（价 η + `news_eta.ty`） |
 | 31 | 无问票占比 % |

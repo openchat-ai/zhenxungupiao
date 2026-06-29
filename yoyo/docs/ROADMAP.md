@@ -12,23 +12,24 @@
 | 6 | 无问占比 + 文献参数 `wuwen.ty` `params.ty` | ✅ v2.1 |
 | 7 | 心理学第 6 票 `psychology.ty` | ✅ v3 |
 | 8 | 逐笔主动买卖第 7 票 `aggressive.ty` + 东财抓取 | ✅ |
-| 9 | OpenBB 新闻 η + easy_tdx 历史逐笔 + v4 七票回测 | ✅ |
-| 10 | **纯 yoyo 回测**（`.tri` 三进制档 + `tri_io.ty`，无 CSV） | 🚧 v2 单股可读 |
+| 9 | OpenBB 新闻 η + easy_tdx 历史逐笔 + v4 七票回测 | ✅ 存档固化 |
+| 10 | **纯 yoyo 三进制回测**（`.tri` + `tri_io.ty`，无 CSV/awk） | ✅ |
 
-### Phase 10：三进制存档（`.tri`）
-
-导出一次（`make tri-archive` / `make tri-archive-v5`），运行时 **LoadFile → 逐字节 trit**：
+### Phase 10：实证 = `.tri`
 
 ```
-v1 TRI\x01: [n u16][n×signal][n×next_ret]
-v2 TRI\x02: [n u16][n×v4][n×tail][n×veto][n×ret][n×veto_flag]
-trit: 0/1/2
+v1 signal_*.tri   — v2 五票
+v2 flow_v5_*.tri  — v4 / tail / veto 对照
 ```
 
-| 层 | 现状 | 目标 |
-|----|------|------|
-| v5 三版对照 | ✅ `flow_v5_*.tri` + `tri_v5_validate.py` | yoyo `backtest_v5_compare.ty` |
-| v2 五票 | ✅ `signal_*.tri` | `make research-v2-yoyo` |
+```bash
+make verify-tri-v5
+make research-v5-tri-validate
+make research-v5-yoyo
+make research-v2-yoyo
+```
+
+`hist_*.csv` 等仅为溯源，**不参与 make**。可选：`make fetch-ticks-tdx`（刷新原始底稿，需人工重烘焙 .tri）。
 
 ## 构建
 
@@ -44,8 +45,8 @@ make fetch-ticks        # 东财当日逐笔 → archive/tick_*.csv
 make fetch-ticks-tdx      # 通达信逐笔，仅 2026 年 → archive/tick_hist/
 make fetch-news         # AKShare/OpenBB 同源新闻 → news_daily_eta.csv
 make extend-hist        # 延伸日线至今日（可选 Python）
-make research-v4        # 七票 + 新闻 η + 历史逐笔回测
-make research-v2-yoyo   # 纯 yoyo v2 单股回测（读 input.ky，Phase 10）
+make research-v5-tri-validate  # 三进制 v5 对照（无 awk）
+make research-v5-yoyo          # 纯 yoyo 读 flow_v5_*.tri
 make tick-demo          # 第 7 票主动买卖演示
 make news-demo          # 新闻 η 增强演示
 make research-verify-v3 # v3 锚点

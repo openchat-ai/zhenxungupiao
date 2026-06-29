@@ -84,8 +84,14 @@ case "$NAME" in
     cat $BACKTEST_LIBS \
         "$ROOT/yoyo/research/backtest_v5_compare.ty" > "$SRC"
     ;;
+  verify-tri)
+    SRC="$ROOT/build/verify_tri.ty"
+    OUT="$ROOT/build/verify_tri.exe"
+    cat $BACKTEST_LIBS \
+        "$ROOT/yoyo/research/verify_tri.ty" > "$SRC"
+    ;;
   *)
-    echo "usage: $0 {walk|butterfly|hold|psychology|tick|news|verify|verify-v2|verify-v3|backtest-v2|backtest-v5}"
+    echo "usage: $0 {walk|butterfly|hold|psychology|tick|news|verify|verify-v2|verify-v3|backtest-v2|backtest-v5|verify-tri}"
     exit 1
     ;;
 esac
