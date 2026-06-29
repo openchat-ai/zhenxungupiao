@@ -28,3 +28,14 @@ export interface SignalPoint {
   index: number;
   trit: Trit;
 }
+
+/** 四个子指标的名称（与 yoyo/ternary_signal.ty 一一对应） */
+export const INDICATOR_NAMES = ['均线', '趋势', 'RSI', 'MACD'] as const;
+export type IndicatorName = (typeof INDICATOR_NAMES)[number];
+
+/** 单根 K 线上各子指标的 trit 投票 + 综合信号 */
+export interface IndicatorVotePoint {
+  index: number;
+  votes: Record<IndicatorName, Trit>;
+  total: Trit;
+}

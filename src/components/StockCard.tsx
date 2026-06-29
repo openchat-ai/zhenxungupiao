@@ -1,11 +1,6 @@
 import { useMemo } from 'react';
 import type { Stock } from '../types';
-import {
-  computeSignals,
-  currentTrit,
-  lastBuyIndex,
-  lastSellIndex,
-} from '../ternary';
+import { analyzeCandles, currentTrit, lastBuyIndex, lastSellIndex } from '../ternary';
 import { KLineChart } from './KLineChart';
 import { SignalBadge } from './SignalBadge';
 import { useLongPress } from '../hooks/useLongPress';
@@ -18,13 +13,16 @@ interface Props {
 
 /** 单只股票的整屏卡片：股票代码 + K 线 + 唯一买卖信号。 */
 export function StockCard({ stock, isFavorite, onToggleFavorite }: Props) {
-  const { signals, trit, buyIndex, sellIndex } = useMemo(() => {
-    const s = computeSignals(stock.candles);
+  const { signals, trit, buyIndex, sellIndex, votes, macd, rsi } = useMemo(() => {
+    const a = analyzeCandles(stock.candles);
     return {
-      signals: s,
-      trit: currentTrit(s),
-      buyIndex: lastBuyIndex(s),
-      sellIndex: lastSellIndex(s),
+      signals: a.signals,
+      votes: a.votes,
+      macd: a.macd,
+      rsi: a.rsi,
+      trit: currentTrit(a.signals),
+      buyIndex: lastBuyIndex(a.signals),
+      sellIndex: lastSellIndex(a.signals),
     };
   }, [stock]);
 
@@ -55,7 +53,14 @@ export function StockCard({ stock, isFavorite, onToggleFavorite }: Props) {
       </header>
 
       <div className="chart-wrap">
-        <KLineChart candles={stock.candles} buyIndex={buyIndex} sellIndex={sellIndex} />
+        <KLineChart
+          candles={stock.candles}
+          buyIndex={buyIndex}
+          sellIndex={sellIndex}
+          votes={votes}
+          macd={macd}
+          rsiValues={rsi}
+        />
       </div>
 
       <SignalBadge trit={trit} />

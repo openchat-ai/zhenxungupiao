@@ -1,5 +1,12 @@
-import type { Candle, SignalPoint, Trit } from './types';
-import { closes, macd, rsi, sma } from './indicators';
+import type {
+  Candle,
+  IndicatorName,
+  IndicatorVotePoint,
+  SignalPoint,
+  Trit,
+} from './types';
+import { INDICATOR_NAMES } from './types';
+import { closes, macd, type Macd, rsi, sma } from './indicators';
 
 /**
  * yoyo 平衡三进制选股引擎。
@@ -31,8 +38,32 @@ const TRIT_LABEL: Record<Trit, string> = {
 
 export const tritLabel = (t: Trit): string => TRIT_LABEL[t];
 
-/** 单只股票每一根 K 线的总信号序列。 */
-export function computeSignals(candles: Candle[]): SignalPoint[] {
+function voteAt(
+  i: number,
+  price: number[],
+  maFast: number[],
+  maSlow: number[],
+  ma10: number[],
+  r: number[],
+  m: Macd,
+): Record<IndicatorName, Trit> {
+  return {
+    均线: trit((maFast[i] || 0) - (maSlow[i] || 0)),
+    趋势: trit(price[i] - (ma10[i] || price[i])),
+    RSI: Number.isNaN(r[i]) ? 0 : r[i] < 35 ? 1 : r[i] > 65 ? -1 : 0,
+    MACD: Number.isNaN(m.hist[i]) ? 0 : trit(m.hist[i]),
+  };
+}
+
+export interface CandleAnalysis {
+  votes: IndicatorVotePoint[];
+  signals: SignalPoint[];
+  macd: Macd;
+  rsi: number[];
+}
+
+/** 计算指标序列、各子指标投票与综合信号。 */
+export function analyzeCandles(candles: Candle[]): CandleAnalysis {
   const price = closes(candles);
   const maFast = sma(price, 5);
   const maSlow = sma(price, 20);
@@ -40,22 +71,19 @@ export function computeSignals(candles: Candle[]): SignalPoint[] {
   const r = rsi(price, 14);
   const m = macd(price);
 
-  return candles.map((_, i) => {
-    // 每一位专家投出一个 trit
-    const votes: Trit[] = [
-      // 1. 均线金叉/死叉：短期均线相对长期均线
-      trit((maFast[i] || 0) - (maSlow[i] || 0)),
-      // 2. 趋势：收盘价相对 10 日均线
-      trit(price[i] - (ma10[i] || price[i])),
-      // 3. RSI 超买超卖（注意：超卖看多 +1，超买看空 -1）
-      Number.isNaN(r[i]) ? 0 : r[i] < 35 ? 1 : r[i] > 65 ? -1 : 0,
-      // 4. MACD 柱状图方向
-      Number.isNaN(m.hist[i]) ? 0 : trit(m.hist[i]),
-    ];
-
-    const sum = votes.reduce<number>((acc, v) => acc + v, 0);
-    return { index: i, trit: trit(sum) };
+  const votes = candles.map((_, i) => {
+    const v = voteAt(i, price, maFast, maSlow, ma10, r, m);
+    const sum = INDICATOR_NAMES.reduce<number>((acc, name) => acc + v[name], 0);
+    return { index: i, votes: v, total: trit(sum) };
   });
+
+  const signals = votes.map((v) => ({ index: v.index, trit: v.total }));
+  return { votes, signals, macd: m, rsi: r };
+}
+
+/** 单只股票每一根 K 线的总信号序列。 */
+export function computeSignals(candles: Candle[]): SignalPoint[] {
+  return analyzeCandles(candles).signals;
 }
 
 /** 当前（最后一根 K 线）的总信号。 */

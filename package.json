@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc -b --noEmit",
-    "yoyo:build": "node yoyo/compiler/yoyo.cjs yoyo/ternary_signal.ty build/ternary_signal.exe"
+    "yoyo:build": "yoyo/compiler/yoyo.exe yoyo/ternary_signal.ty build/ternary_signal.exe"
   },
   "dependencies": {
     "react": "^18.3.1",
