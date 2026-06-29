@@ -12,6 +12,7 @@
 | 6 | 无问占比 + 文献参数 `wuwen.ty` `params.ty` | ✅ v2.1 |
 | 7 | 心理学第 6 票 `psychology.ty` | ✅ v3 |
 | 8 | 逐笔主动买卖第 7 票 `aggressive.ty` + 东财抓取 | ✅ |
+| 9 | OpenBB 调研（可选导出，非运行时） | 📋 见 `OPENBB.md` |
 
 ## 构建
 
@@ -38,6 +39,8 @@ make butterfly-demo   # 蝴蝶效应：1 元扰动翻转决策
 - `docs/PRIOR-RESEARCH.md` — 前人成果与可调参数
 - `docs/PSYCHOLOGY.md` — **行为金融心理学第 6 票**
 - `docs/THEORY-TERNARY-METAPHYSICS.md` — 三进制与股票预测（含 archive 实证）
+- `docs/TICK-DATA-SOURCES.md` — 逐笔来源（东财 push2）
+- `docs/OPENBB.md` — **OpenBB 开源平台调研**（A 股扩展、与 yoyo 边界）
 - `research/archive/` — 固化回测数据（零 Python 运行时）
 
 ## 零依赖

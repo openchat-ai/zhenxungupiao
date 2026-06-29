@@ -70,12 +70,27 @@ state[50] 主动买占比 %
 
 ---
 
-## 五、诚实边界
+## 五、OpenBB（可选研究工具，非运行时）
+
+[OpenBB](https://github.com/OpenBB-finance/OpenBB) 是开源金融数据平台（Python），A 股经 **openbb-akshare** / **openbb-tushare** 扩展可拉日线、新闻、基本面。
+
+| 对比 | 东财 push2（本仓库） | OpenBB + AKShare |
+|------|---------------------|------------------|
+| 运行时 | curl+awk，零 Python | 需 Python，**不进 Makefile** |
+| 逐笔 bs | ✅ 当日主动买卖 | ❌ 非核心能力 |
+| 日线 hist | 已固化 archive | 与 AKShare 同源，可一次性重导 |
+
+详见 **`OPENBB.md`**。
+
+---
+
+## 六、诚实边界
 
 - **日线 hist_*.csv** 仍无法区分主动买卖
 - **东财当日逐笔** 可驱动「第 7 票」，但**不能**自动补全 2018–2024 全历史
 - 全历史逐笔需：iFinD / Wind / 掘金历史 L2 / 通达信历史（见 `QUANT-STRATEGIES.md`）
+- **OpenBB** 适合研究期统一导出，**不能**替代 yoyo 决策栈
 
 ---
 
-*与 `PSYCHOLOGY.md`、`PRIOR-RESEARCH.md` 配套。*
+*与 `OPENBB.md`、`PSYCHOLOGY.md`、`PRIOR-RESEARCH.md` 配套。*
