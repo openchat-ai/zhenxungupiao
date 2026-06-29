@@ -2,7 +2,7 @@
 # 通达信历史逐笔批量抓取 + 日汇总（可选 Python）
 set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-DAYS="${1:-10}"
+DAYS="${1:-126}"
 PY="$ROOT/scripts/fetch_tick_tdx_optional.py"
 chmod +x "$PY"
 

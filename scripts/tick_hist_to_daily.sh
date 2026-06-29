@@ -20,11 +20,11 @@ TMP="$(mktemp)"
     }' "$f"
   done
   if [ -f "$EM" ]; then
-    awk -F, 'NR>1 {printf "%s,%s,%s,%s,%s,eastmoney_push2\n",$1,$2,$3,$4,$5}' "$EM"
+    awk -F, 'NR>1 && $1!="date" {printf "%s,%s,%s,%s,%s,eastmoney_push2\n",$1,$2,$3,$4,$5}' "$EM"
   fi
 } > "$TMP"
-# 去重：同 date+code 保留 eastmoney（较新）
-awk -F, 'NR==1{print;next} {
+# 去重：同 date+code 保留 eastmoney（较新）；剔除脏行
+awk -F, 'NR==1{print;next} $1!="date" && $2!="code" {
   k=$1","$2
   if (!($6 ~ /eastmoney/) && (k in seen)) next
   if ($6 ~ /eastmoney/) seen[k]=1

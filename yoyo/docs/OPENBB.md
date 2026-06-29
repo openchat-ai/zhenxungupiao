@@ -139,12 +139,12 @@ df = ak.stock_zh_a_tick_tx(symbol="sh600519", trade_date="20240628")
 3. **对当前七票栈**：
    - 日线回测：archive 已有，OpenBB **无增量**
    - 第 7 票逐笔：东财 curl **更直接**；OpenBB 未标准化逐笔 provider
-   - 未来 η 新闻层：OpenBB `news` **可考虑**作离线语料，仍须固化 CSV/JSON 后进 yoyo
+   - **新闻 η 层**：已落地 `make fetch-news` + `news_eta.ty`
 4. **若你已在用 OpenBB Workspace**：可把震巽 `backtest_v*_summary.json` 当自定义 widget 数据源；方向是「震巽 → OpenBB 展示」，不是反过来依赖 OpenBB 决策。
 
 ---
 
-## 七、链接
+## 八、链接
 
 | 资源 | URL |
 |------|-----|

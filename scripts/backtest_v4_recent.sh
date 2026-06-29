@@ -93,6 +93,19 @@ run_window() {
 
 chmod +x "$AWK"
 run_window "2025" "2025-01-01" "2026-12-31" 0
+
+# 逐笔 archive 实际覆盖窗（tick_hist_daily 最小~最大交易日）
+TICK_CSV="$ARCH/tick_hist_daily.csv"
+if [ -f "$TICK_CSV" ]; then
+  TICK_FROM=$(awk -F, 'NR>1 && $1!="date" {print $1}' "$TICK_CSV" | sort | head -1)
+  TICK_TO=$(awk -F, 'NR>1 && $1!="date" {print $1}' "$TICK_CSV" | sort | tail -1)
+  TICK_N=$(awk -F, 'NR>1 && $1!="date" {print $1}' "$TICK_CSV" | sort -u | wc -l | tr -d ' ')
+  if [ -n "$TICK_FROM" ] && [ "$TICK_N" -ge 20 ]; then
+    run_window "tickcov" "$TICK_FROM" "$TICK_TO" 0
+    echo "OK tick coverage window ${TICK_FROM}..${TICK_TO} (~${TICK_N} unique days in daily csv)"
+  fi
+fi
+
 run_window "june2026" "2026-06-16" "2026-06-29" 0
 run_window "overlap" "2025-01-01" "2026-12-31" 1
 
@@ -106,7 +119,8 @@ run_window "overlap" "2025-01-01" "2026-12-31" 1
   echo "本报告切两段："
   echo ""
   echo "1. **2025+**：宏观近段（价量票全参与）"
-  echo "2. **overlap**：仅有新闻或逐笔数据的交易日（七票全参与）"
+  echo "2. **tickcov**：tick_hist 实际覆盖窗（七票 + 逐笔 100%）"
+  echo "3. **overlap**：仅有新闻或逐笔数据的交易日"
   echo ""
   echo "## 全样本 v4（对照）"
   echo ""
@@ -120,7 +134,17 @@ run_window "overlap" "2025-01-01" "2026-12-31" 1
   cat "$ARCH/backtest_v4_recent_2025_summary.json"
   echo '```'
   echo ""
-  echo "## 逐笔窗 2026-06-16~29"
+  echo "## 逐笔 archive 覆盖窗（tickcov）"
+  echo ""
+  if [ -f "$ARCH/backtest_v4_recent_tickcov_summary.json" ]; then
+    echo '```json'
+    cat "$ARCH/backtest_v4_recent_tickcov_summary.json"
+    echo '```'
+  else
+    echo "（逐笔不足 20 交易日，未生成）"
+  fi
+  echo ""
+  echo "## 逐笔窗 2026-06-16~29（旧 9 日对照）"
   echo ""
   echo '```json'
   cat "$ARCH/backtest_v4_recent_june2026_summary.json"

@@ -37,11 +37,11 @@ make tick-demo            # 七票决策演示
 | 项 | 说明 |
 |----|------|
 | **依赖** | `pip install easy-tdx`（见 `requirements-optional.txt`） |
-| **命令** | `make fetch-ticks-tdx DAYS=10` |
+| **命令** | `make fetch-ticks-tdx-6m`（126 交易日）/ `fetch-ticks-tdx-3m` |
 | **输出** | `research/archive/tick_hist/tick_<code>_<YYYYMMDD>.csv` |
 | **日汇总** | `tick_hist_daily.csv`（主动买/卖 %） |
 | **bs 映射** | TDX `0=买→1` `1=卖→2` `2/5→4`（对齐东财格式） |
-| **限制** | 依赖通达信行情服务器；非商用；历史深度因券商源而异 |
+| **限制** | 依赖通达信行情服务器；非商用；**2026-01 前常返回空** |
 
 与东财 `push2` 对照：
 
