@@ -70,6 +70,10 @@ research-v4:
 	@chmod +x scripts/backtest_v4.sh
 	@./scripts/backtest_v4.sh
 
+research-v4-recent:
+	@chmod +x scripts/backtest_v4_recent.sh
+	@./scripts/backtest_v4_recent.sh
+
 research-verify-v2:
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh verify-v2
