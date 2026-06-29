@@ -89,6 +89,21 @@ AKShare 底层与本仓库 `research/archive/hist_*.csv` 的来源（`stock_zh_a
 
 ## 五、若要用 OpenBB 导出（可选，非仓库默认）
 
+**本仓库已实现**（AKShare 直连，与 OpenBB `provider=akshare` 同源）：
+
+```bash
+pip install -r requirements-optional.txt
+make fetch-news              # → research/archive/news_*.csv + news_daily_eta.csv
+make extend-hist             # 延伸 hist_*.csv 至今日
+python3 scripts/export_news_optional.py --openbb   # 需配置 akshare_api_key
+```
+
+η 层接入：`yoyo/lib/news_eta.ty`（读 `state[51]`）· `make news-demo`
+
+---
+
+## 六、原 OpenBB 手工导出示例
+
 以下**不在 CI/Makefile 中执行**；导出后 CSV 入 `research/archive/`，与现有 `hist_*.csv` 格式对齐即可。
 
 ```python
@@ -117,7 +132,7 @@ df = ak.stock_zh_a_tick_tx(symbol="sh600519", trade_date="20240628")
 
 ---
 
-## 六、诚实结论（给决策用）
+## 七、诚实结论（给决策用）
 
 1. **OpenBB 值得知道**：全球开源金融数据「枢纽」，A 股靠社区扩展已可用。
 2. **不值得搬进震巽运行时**：与「零 Python / 零 npm」原则冲突；和已删的 React 同属外部生态。

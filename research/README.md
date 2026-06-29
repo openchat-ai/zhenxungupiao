@@ -9,6 +9,9 @@
 | 文件 | 说明 |
 |------|------|
 | `archive/backtest_v3_summary.json` | **v3 六票+心理学**（`make research-v3`） |
+| `archive/backtest_v4_summary.json` | **v4 七票+新闻 η+逐笔**（`make research-v4`） |
+| `archive/news_daily_eta.csv` | 新闻情绪日表（`make fetch-news`） |
+| `archive/tick_hist_daily.csv` | 历史逐笔日汇总（`make fetch-ticks-tdx`） |
 | `archive/backtest_v2_by_stock.csv` | v2 分标的 + 动量/均值回归对照 |
 | `archive/BACKTEST_V2_REPORT.md` | v2 人类可读报告 |
 | `archive/backtest_by_stock.csv` | 分标的绩效 |
@@ -19,7 +22,7 @@
 ## 纯 yoyo 复现（投票逻辑）
 
 ```bash
-make research-v2        # 八股全量 v2 回测（awk，零 Python）
+make research-v4        # 八股全量 v4 回测（七票+新闻+逐笔）
 make research-verify-v2 # v2 锚点
 make research-walk      # 五票演示
 make hold-ratio         # 无问平淡 vs 急涨

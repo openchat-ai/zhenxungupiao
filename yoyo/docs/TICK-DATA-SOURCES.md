@@ -32,7 +32,28 @@ make tick-demo            # 七票决策演示
 
 ---
 
-## 二、同花顺 / 通达信等软件
+## 二、通达信 easy-tdx（历史逐笔，可选 Python）
+
+| 项 | 说明 |
+|----|------|
+| **依赖** | `pip install easy-tdx`（见 `requirements-optional.txt`） |
+| **命令** | `make fetch-ticks-tdx DAYS=10` |
+| **输出** | `research/archive/tick_hist/tick_<code>_<YYYYMMDD>.csv` |
+| **日汇总** | `tick_hist_daily.csv`（主动买/卖 %） |
+| **bs 映射** | TDX `0=买→1` `1=卖→2` `2/5→4`（对齐东财格式） |
+| **限制** | 依赖通达信行情服务器；非商用；历史深度因券商源而异 |
+
+与东财 `push2` 对照：
+
+| | 东财 curl | easy-tdx |
+|--|----------|----------|
+| 运行时 | 零 Python | 可选 Python 抓取 |
+| 历史 |  mainly 当日 | ✅ 近 N 交易日 |
+| 主动买卖 | bs 1/2 | bs_flag 0/1 |
+
+---
+
+## 三、同花顺 / 通达信等软件
 
 | 渠道 | 能否看逐笔 | 能否批量导出 | 适合震巽 |
 |------|-----------|-------------|---------|
@@ -43,7 +64,7 @@ make tick-demo            # 七票决策演示
 
 ---
 
-## 三、交易所官方（机构）
+## 四、交易所官方（机构）
 
 - [上交所 LDDS Level-2](https://www.sseinfo.com/) — STEP/FAST 二进制流
 - [深交所行情网关 MDC](http://www.szsi.cn/) — 需授权与机房
@@ -63,7 +84,9 @@ state[50] 主动买占比 %
 | state | 含义 |
 |-------|------|
 | 50 | 当日主动买笔数 % |
+| 51 | 新闻情绪分 %（`news_to_embed.sh`） |
 | 16 | 第 7 票 trit |
+| 14 | 第 5 票 trit（价 η + `news_eta.ty`） |
 | 31 | 无问票占比 % |
 
 参数：`params[0B]=55`（买阈）、`params[0C]=45`（卖阈）

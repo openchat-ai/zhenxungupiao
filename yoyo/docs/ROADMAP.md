@@ -12,7 +12,7 @@
 | 6 | 无问占比 + 文献参数 `wuwen.ty` `params.ty` | ✅ v2.1 |
 | 7 | 心理学第 6 票 `psychology.ty` | ✅ v3 |
 | 8 | 逐笔主动买卖第 7 票 `aggressive.ty` + 东财抓取 | ✅ |
-| 9 | OpenBB 调研（可选导出，非运行时） | 📋 见 `OPENBB.md` |
+| 9 | OpenBB 新闻 η + easy_tdx 历史逐笔 + v4 七票回测 | ✅ |
 
 ## 构建
 
@@ -25,7 +25,12 @@ make signal           # 仅决策核心
 make research-walk    # 纯 yoyo 五票投票演示
 make research-verify  # 实证锚点校验
 make fetch-ticks        # 东财当日逐笔 → archive/tick_*.csv
+make fetch-ticks-tdx    # 通达信历史逐笔 → archive/tick_hist/（可选 Python）
+make fetch-news         # AKShare/OpenBB 同源新闻 → news_daily_eta.csv
+make extend-hist        # 延伸日线至今日（可选 Python）
+make research-v4        # 七票 + 新闻 η + 历史逐笔回测
 make tick-demo          # 第 7 票主动买卖演示
+make news-demo          # 新闻 η 增强演示
 make research-verify-v3 # v3 锚点
 make hold-ratio         # 无问占比：平淡 vs 急涨 + 文献锚
 make butterfly-demo   # 蝴蝶效应：1 元扰动翻转决策
