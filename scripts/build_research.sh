@@ -16,6 +16,9 @@ RESEARCH_LIBS="$ROOT/yoyo/lib/fp.ty \
   $ROOT/yoyo/lib/wuwen.ty \
   $ROOT/yoyo/ternary_signal.ty"
 
+BACKTEST_LIBS="$ROOT/yoyo/lib/mem.ty \
+  $ROOT/yoyo/lib/csv.ty"
+
 case "$NAME" in
   walk)
     SRC="$ROOT/build/walk_forward.ty"
@@ -70,8 +73,14 @@ case "$NAME" in
     OUT="$ROOT/build/verify_v2.exe"
     cp "$ROOT/yoyo/research/verify_v2.ty" "$SRC"
     ;;
+  backtest-v2)
+    SRC="$ROOT/build/backtest_v2.ty"
+    OUT="$ROOT/build/backtest_v2.exe"
+    cat $RESEARCH_LIBS $BACKTEST_LIBS \
+        "$ROOT/yoyo/research/backtest_v2.ty" > "$SRC"
+    ;;
   *)
-    echo "usage: $0 {walk|butterfly|hold|psychology|tick|news|verify|verify-v2|verify-v3}"
+    echo "usage: $0 {walk|butterfly|hold|psychology|tick|news|verify|verify-v2|verify-v3|backtest-v2}"
     exit 1
     ;;
 esac
