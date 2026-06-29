@@ -10,14 +10,14 @@ interface SwipeHandlers {
 const THRESHOLD = 40; // 触发滑动所需的最小位移(px)
 
 /**
- * 四方向滑动手势。基于 Pointer Events，鼠标拖拽与触摸都适用，
- * 方便在桌面浏览器里演示。
+ * 四方向滑动手势。基于 Pointer Events，专为本 App 的上下翻股、左右切页设计。
  */
 export function useSwipe(handlers: SwipeHandlers) {
   const start = useRef<{ x: number; y: number } | null>(null);
 
   const onPointerDown = (e: ReactPointerEvent) => {
     start.current = { x: e.clientX, y: e.clientY };
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const onPointerUp = (e: ReactPointerEvent) => {
@@ -25,6 +25,11 @@ export function useSwipe(handlers: SwipeHandlers) {
     const dx = e.clientX - start.current.x;
     const dy = e.clientY - start.current.y;
     start.current = null;
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      // ignore
+    }
 
     if (Math.abs(dx) < THRESHOLD && Math.abs(dy) < THRESHOLD) return;
 
@@ -37,5 +42,5 @@ export function useSwipe(handlers: SwipeHandlers) {
     }
   };
 
-  return { onPointerDown, onPointerUp };
+  return { onPointerDown, onPointerUp, onPointerCancel: onPointerUp };
 }

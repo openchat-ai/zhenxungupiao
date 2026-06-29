@@ -1,0 +1,11 @@
+{
+  "name": "震巽股票",
+  "short_name": "震巽",
+  "description": "yoyo 三进制极简选股 App",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0e11",
+  "theme_color": "#0b0e11",
+  "lang": "zh-CN"
+}

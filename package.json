@@ -10,9 +10,19 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc -b --noEmit",
-    "yoyo:build": "yoyo/compiler/yoyo.exe yoyo/ternary_signal.ty build/ternary_signal.exe"
+    "yoyo:build": "yoyo/compiler/yoyo.exe yoyo/ternary_signal.ty build/ternary_signal.exe",
+    "mobile:build": "npm run build && npx cap sync",
+    "mobile:android": "npm run mobile:build && npx cap open android",
+    "mobile:ios": "npm run mobile:build && npx cap open ios",
+    "mobile:run:android": "npm run mobile:build && npx cap run android"
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/ios": "^8.4.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
