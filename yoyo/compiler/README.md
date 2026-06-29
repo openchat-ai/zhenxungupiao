@@ -1,19 +1,14 @@
-# yoyo 三进制编译器 (yoyo.exe)
+# yoyo.exe — 官方三进制自托管编译器
 
-本目录存放 [openchat-ai/yoyo-ide](https://github.com/openchat-ai/yoyo-ide) 官方 bootstrap 产物
-`build/yoyo.exe`（PE32+ x86_64，约 85 KB）。
+来源：[openchat-ai/yoyo-ide](https://github.com/openchat-ai/yoyo-ide) `build/yoyo.exe`
 
-**这是真正的 yoyo 自托管编译器可执行文件，不是 JavaScript。**
-
-## 用法
+- **不是 JavaScript**，是 PE32+ x86_64 原生可执行文件
+- **零依赖**：无 CRT、无 Node、无第三方库
+- 将 `.ty` 编译为 Windows 原生程序；多平台后端见 `docs/ROADMAP.md`
 
 ```bash
-npm run yoyo:build
-# 等价于：yoyo/compiler/yoyo.exe yoyo/ternary_signal.ty build/ternary_signal.exe
+yoyo.exe input.ty output.exe
+# 或：make stock
 ```
 
-在 Windows 上直接运行；在 Linux / macOS 上需通过 Wine 执行 `yoyo.exe`。
-
-## 来源
-
-从 yoyo-ide 仓库 `build/yoyo.exe` 原样获取，未经修改。
+Linux/macOS 需 Wine 运行本二进制。
