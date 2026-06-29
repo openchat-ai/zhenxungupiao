@@ -15,7 +15,8 @@
 | `archive/news_daily_eta.csv` | 新闻情绪日表（`make fetch-news`） |
 | `archive/tick_hist/` | **2026 年**逐笔明细（`make fetch-ticks-tdx`） |
 | `archive/tick_hist_daily.csv` | 历史逐笔日汇总（`make fetch-ticks-tdx`） |
-| `archive/signal_*.tri` | **v2 三进制信号档**（`make tri-archive`，运行时直读 trit） |
+| `archive/signal_*.tri` | v2 五票信号档（`make tri-archive`） |
+| `archive/flow_v5_*.tri` | **v5 三版信号档**（v4/tail/veto，`make tri-archive-v5`） |
 | `archive/BACKTEST_V2_REPORT.md` | v2 人类可读报告 |
 | `archive/backtest_by_stock.csv` | 分标的绩效 |
 | `archive/BACKTEST_REPORT.md` | 人类可读报告 |
@@ -25,7 +26,9 @@
 ## 纯 yoyo 复现（投票逻辑）
 
 ```bash
-make research-v4        # 八股全量 v4 回测（七票+新闻+逐笔）
+make tri-archive-v5     # hist+tick → flow_v5_*.tri
+make research-v5-tri-validate  # 三进制指标汇总（无 awk 回测）
+make research-v5-yoyo   # 纯 yoyo 读 flow_v5_*.tri（单股演示，需 Wine）
 make research-verify-v2 # v2 锚点
 make research-walk      # 五票演示
 make hold-ratio         # 无问平淡 vs 急涨

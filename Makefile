@@ -8,7 +8,8 @@ MERGE     := $(BUILD)/yoyo_merged.ty
 RUN = if command -v wine >/dev/null 2>&1; then wine $(1) $(2) $(3); else $(1) $(2) $(3); fi
 
 .PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean \
-  research-walk research-verify research-v2 research-v2-yoyo tri-archive research-v3 research-v4 research-v4-recent research-v5-compare \
+  research-walk research-verify research-v2 research-v2-yoyo tri-archive tri-archive-v5 \
+  research-v5-yoyo research-v5-tri-validate research-v3 research-v4 research-v4-recent research-v5-compare \
   research-verify-v2 research-verify-v3 \
   butterfly-demo hold-ratio psychology-demo \
   fetch-news news-embed news-demo extend-hist \
@@ -74,6 +75,20 @@ research-v2-yoyo:
 	@test -f research/archive/signal_600519.tri || $(MAKE) tri-archive
 	@cp research/archive/signal_600519.tri input.ky
 	@if command -v wine >/dev/null 2>&1; then wine $(BUILD)/backtest_v2.exe; else $(BUILD)/backtest_v2.exe; fi
+
+tri-archive-v5:
+	@chmod +x scripts/hist_to_tri_v5_all.sh
+	@./scripts/hist_to_tri_v5_all.sh
+
+research-v5-tri-validate: tri-archive-v5
+	@python3 scripts/tri_v5_validate.py
+
+research-v5-yoyo:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh backtest-v5
+	@test -f research/archive/flow_v5_600519.tri || $(MAKE) tri-archive-v5
+	@cp research/archive/flow_v5_600519.tri input.ky
+	@if command -v wine >/dev/null 2>&1; then wine $(BUILD)/backtest_v5_compare.exe; else $(BUILD)/backtest_v5_compare.exe; fi
 
 research-v3:
 	@chmod +x scripts/backtest_v3.sh

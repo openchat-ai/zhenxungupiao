@@ -17,22 +17,18 @@
 
 ### Phase 10：三进制存档（`.tri`）
 
-导出一次（`make tri-archive`），运行时 **LoadFile → 逐字节 trit**，无需 CSV/浮点解析：
+导出一次（`make tri-archive` / `make tri-archive-v5`），运行时 **LoadFile → 逐字节 trit**：
 
 ```
-[TRI\1][n u16][n×signal][n×next_ret]
-trit: 0/1/2  卖/持/买 或 跌/平/涨
+v1 TRI\x01: [n u16][n×signal][n×next_ret]
+v2 TRI\x02: [n u16][n×v4][n×tail][n×veto][n×ret][n×veto_flag]
+trit: 0/1/2
 ```
 
 | 层 | 现状 | 目标 |
 |----|------|------|
-| 七票决策 | ✅ `lib/*.ty` | 已纯 yoyo |
-| v2–v5 全量回测 | `scripts/backtest_v*.awk` | 读 `signal_*.tri` + `tri_io.ty` |
-| hist 导出 | `make tri-archive`（一次性） | CSV→`.tri`，不进运行时 |
-| 数据抓取 | `fetch_*.sh`（curl） | 保留为可选 export |
-
-**已解决**：CSV 浮点解析 → 改为三进制字节档。  
-**待补**：八股汇总、Sharpe（可继续用 trit 同向率或定点）、v4/v5 逐笔 trit 列。
+| v5 三版对照 | ✅ `flow_v5_*.tri` + `tri_v5_validate.py` | yoyo `backtest_v5_compare.ty` |
+| v2 五票 | ✅ `signal_*.tri` | `make research-v2-yoyo` |
 
 ## 构建
 

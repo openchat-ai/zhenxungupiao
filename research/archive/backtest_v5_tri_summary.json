@@ -1,0 +1,16 @@
+{
+  "version": "v5_tri_compare",
+  "window": "2026 tick archive (flow_v5_*.tri)",
+  "engine": "pure trit \u2014 tri_io.ty + flow_v5_*.tri",
+  "v4_agree_rate": 0.49162011173184356,
+  "tail_agree_rate": 0.48268156424581005,
+  "veto_agree_rate": 0.42793296089385474,
+  "v4_net_wins": -65,
+  "tail_net_wins": -67,
+  "veto_net_wins": -60,
+  "buyhold_net_wins": -141,
+  "v4_beats_buyhold": 6,
+  "tail_beats_buyhold": 6,
+  "veto_beats_buyhold": 7,
+  "veto_mean_veto_pct": 0.16847826086956522
+}

@@ -16,8 +16,7 @@ RESEARCH_LIBS="$ROOT/yoyo/lib/fp.ty \
   $ROOT/yoyo/lib/wuwen.ty \
   $ROOT/yoyo/ternary_signal.ty"
 
-BACKTEST_LIBS="$ROOT/yoyo/lib/mem.ty \
-  $ROOT/yoyo/lib/tri_io.ty"
+BACKTEST_LIBS="$ROOT/yoyo/lib/tri_io.ty"
 
 case "$NAME" in
   walk)
@@ -79,8 +78,14 @@ case "$NAME" in
     cat "$ROOT/yoyo/lib/fp.ty" $BACKTEST_LIBS \
         "$ROOT/yoyo/research/backtest_v2.ty" > "$SRC"
     ;;
+  backtest-v5)
+    SRC="$ROOT/build/backtest_v5_compare.ty"
+    OUT="$ROOT/build/backtest_v5_compare.exe"
+    cat $BACKTEST_LIBS \
+        "$ROOT/yoyo/research/backtest_v5_compare.ty" > "$SRC"
+    ;;
   *)
-    echo "usage: $0 {walk|butterfly|hold|psychology|tick|news|verify|verify-v2|verify-v3|backtest-v2}"
+    echo "usage: $0 {walk|butterfly|hold|psychology|tick|news|verify|verify-v2|verify-v3|backtest-v2|backtest-v5}"
     exit 1
     ;;
 esac

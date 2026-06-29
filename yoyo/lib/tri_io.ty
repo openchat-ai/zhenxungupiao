@@ -1,19 +1,37 @@
 ; ==============================================================================
-;  tri_io.ty — 三进制存档 .tri 读取（零 CSV 解析）
+;  tri_io.ty — 三进制存档 .tri 读取
 ; ------------------------------------------------------------------------------
-;  格式 v1（6 + 2n 字节）：
-;    [0..3]  "TRI\1"
-;    [4..5]  n_days u16 LE
-;    [6..6+n-1]     signal trit/byte  0卖 1持 2买
-;    [6+n..6+2n-1]  next_ret trit/byte 0跌 1平 2涨
+;  v1 TRI\x01: 6 + 2n  → sig, ret
+;  v2 TRI\x02: 6 + 5n  → v4, tail, veto, ret, veto_flag
 ;
-;  LoadFile 后：state[08]=ptr, state[09]=size
-;  state[24]=n  state[26]=sig基址(6)  state[27]=ret基址(6+n)
-;  state[30]=日索引 → H_F5/H_F6 读出 state[31]/state[32]
+;  state[08]=buf  state[24]=n  state[38]=version(1|2)
+;  v1: state[26]=sig@6  state[27]=ret@6+n
+;  v2: state[26]=v4@6  state[28]=tail@6+n  state[29]=veto@6+2n
+;      state[27]=ret@6+3n  state[2A]=vflag@6+4n
+;  state[30]=日索引
 ; ==============================================================================
 
-; H_F4: tri_meta — n = u16@4；state[26]=6；state[27]=6+n
+; H_E1: mem_byte — state[80] = buf[state[25]]
+40 E1
+84 80 25 01
+FF
+
+; H_F4: tri_meta — 读 version@3，分 v1/v2
 40 F4
+30 25 03
+41 E1
+60 38 80
+30 3F 02
+65 38 3F
+71 F4V5
+30 3F 01
+65 38 3F
+71 F4V1
+30 38 00
+70 F4V1
+
+; v1 meta
+40 F4V1
 30 25 04
 41 E1
 60 34 80
@@ -33,7 +51,41 @@
 61 27 06
 FF
 
-; H_F5: tri_sig — state[31] = signal[state[30]]
+; v2 meta
+40 F4V5
+30 38 02
+30 25 04
+41 E1
+60 34 80
+30 25 05
+41 E1
+60 35 80
+60 24 34
+40 F4M2
+65 35 00
+71 F4D2
+68 24 35
+62 35 01
+70 F4M2
+40 F4D2
+30 26 06
+60 28 24
+61 28 06
+60 29 24
+68 29 24
+61 29 06
+60 27 24
+68 27 24
+68 27 24
+61 27 06
+60 2A 24
+68 2A 24
+68 2A 24
+68 2A 24
+61 2A 06
+FF
+
+; H_F5: tri_sig (v1 col0 / v2=v4)
 40 F5
 60 25 26
 68 25 30
@@ -41,7 +93,23 @@ FF
 60 31 80
 FF
 
-; H_F6: tri_ret — state[32] = next_ret[state[30]]
+; H_F9: tri_tail
+40 F9
+60 25 28
+68 25 30
+41 E1
+60 31 80
+FF
+
+; H_FA: tri_veto sig
+40 FA
+60 25 29
+68 25 30
+41 E1
+60 31 80
+FF
+
+; H_F6: tri_ret
 40 F6
 60 25 27
 68 25 30
@@ -49,7 +117,15 @@ FF
 60 32 80
 FF
 
-; H_F7: tri_agree — sig/ret 同涨(2,2)或同跌(0,0) → state[33]=1
+; H_FC: veto_flag byte
+40 FC
+60 25 2A
+68 25 30
+41 E1
+60 33 80
+FF
+
+; H_F7: tri_agree — state[31] vs state[32] 同涨/同跌 → state[33]=1
 40 F7
 30 33 00
 65 31 32
@@ -72,4 +148,43 @@ FF
 30 33 01
 40 F7N
 40 F7D
+FF
+
+; H_FD: pos_step — 按 state[31] 更新 state[3D] 仓位(0/1)
+;  2→1  0→0  1→保持
+40 FD
+30 34 02
+65 31 34
+71 FDB
+30 34 00
+65 31 34
+71 FDS
+70 FDD
+40 FDB
+30 3D 01
+70 FDD
+40 FDS
+30 3D 00
+40 FDD
+FF
+
+; H_FE: score_step — 仓位×涨跌 → state[3E] ±1
+40 FE
+65 32 01
+71 FEE
+65 3D 00
+71 FEE
+30 34 02
+65 32 34
+71 FEW
+30 34 00
+65 32 34
+71 FEL
+70 FEE
+40 FEW
+66 3E
+70 FEE
+40 FEL
+62 3E 01
+40 FEE
 FF
