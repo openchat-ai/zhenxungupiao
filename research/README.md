@@ -11,6 +11,8 @@
 | `archive/backtest_v3_summary.json` | **v3 六票+心理学**（`make research-v3`） |
 | `archive/backtest_v4_summary.json` | **v4 七票+新闻 η+逐笔**（`make research-v4`） |
 | `archive/backtest_v5_compare_summary.json` | **尾盘 vs 否决**（`make research-v5-compare`） |
+| `archive/backtest_v6_compare_summary.json` | **14 种 flow 指示对照**（`make research-v6-compare`） |
+| `archive/tick_features_daily.csv` | 多维逐笔特征（vw/时段/大单/delta） |
 | `archive/tick_tail_daily.csv` | 尾盘 14:30–15:00 主动买% |
 | `archive/news_daily_eta.csv` | 新闻情绪日表（`make fetch-news`） |
 | `archive/tick_hist/` | **2026 年**逐笔明细（`make fetch-ticks-tdx`） |
@@ -26,6 +28,8 @@
 
 ```bash
 make research-v4        # 八股全量 v4 回测（七票+新闻+逐笔）
+make research-v6-compare  # 14 种买入/卖出指示对照
+make flow-signal-demo   # yoyo 纯 flow 指示演示
 make research-verify-v2 # v2 锚点
 make research-walk      # 五票演示
 make hold-ratio         # 无问平淡 vs 急涨

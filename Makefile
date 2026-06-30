@@ -8,11 +8,11 @@ MERGE     := $(BUILD)/yoyo_merged.ty
 RUN = if command -v wine >/dev/null 2>&1; then wine $(1) $(2) $(3); else $(1) $(2) $(3); fi
 
 .PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean \
-  research-walk research-verify research-v2 research-v3 research-v4 research-v4-recent research-v5-compare \
+  research-walk research-verify research-v2 research-v3 research-v4 research-v4-recent research-v5-compare research-v6-compare \
   research-verify-v2 research-verify-v3 \
   butterfly-demo hold-ratio psychology-demo \
   fetch-news news-embed news-demo extend-hist \
-  fetch-ticks fetch-ticks-tdx tick-embed tick-demo
+  fetch-ticks fetch-ticks-tdx tick-embed tick-demo flow-embed flow-signal-demo
 
 all: stock stock-gui
 
@@ -78,6 +78,10 @@ research-v5-compare:
 	@chmod +x scripts/backtest_v5_compare.sh
 	@./scripts/backtest_v5_compare.sh
 
+research-v6-compare:
+	@chmod +x scripts/backtest_v6_compare.sh
+	@./scripts/backtest_v6_compare.sh
+
 research-verify-v2:
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh verify-v2
@@ -123,6 +127,15 @@ tick-embed:
 tick-demo: tick-embed
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh tick
+
+flow-embed:
+	@chmod +x scripts/flow_to_embed.sh scripts/tick_features_to_daily.sh
+	@./scripts/tick_features_to_daily.sh
+	@./scripts/flow_to_embed.sh research/archive/tick_features_daily.csv build/flow_embed.ty $(or $(CODE),600036)
+
+flow-signal-demo: flow-embed
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh flow
 
 butterfly-demo:
 	@chmod +x scripts/build_research.sh

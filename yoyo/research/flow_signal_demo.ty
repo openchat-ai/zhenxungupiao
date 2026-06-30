@@ -1,0 +1,5 @@
+; flow_signal_demo — 逐笔买入/卖出指示
+; make flow-embed CODE=600036 && make flow-signal-demo
+
+41 E8
+FF
