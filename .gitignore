@@ -1,37 +1,16 @@
 # Logs
-logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
 
-node_modules
-dist
-dist-ssr
-build
-*.local
-*.tsbuildinfo
+# 构建产物
+build/
+dist/
+node_modules/
 
-# Capacitor / 原生工程构建产物
-android/.gradle
-android/app/build
-android/build
-android/local.properties
-android/.idea
-android/captures
-ios/App/build
-ios/App/DerivedData
-ios/App/Pods
-ios/capacitor-cordova-ios-plugins
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# 编辑器
+.vscode/
+.idea/
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+# 若本地误装 npm
+package-lock.json
+*.tsbuildinfo
