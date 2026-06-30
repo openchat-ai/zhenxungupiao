@@ -7,7 +7,12 @@ MERGE     := $(BUILD)/yoyo_merged.ty
 
 RUN = if command -v wine >/dev/null 2>&1; then wine $(1) $(2) $(3); else $(1) $(2) $(3); fi
 
-.PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean research-walk research-verify
+.PHONY: all merge bootstrap compiler stock stock-gui stock-gui-elf signal clean \
+  research-walk research-verify research-v2 research-v3 research-v4 research-v4-recent research-v5-compare \
+  research-verify-v2 research-verify-v3 \
+  butterfly-demo hold-ratio psychology-demo \
+  fetch-news news-embed news-demo extend-hist \
+  fetch-ticks fetch-ticks-tdx tick-embed tick-demo
 
 all: stock stock-gui
 
@@ -52,3 +57,77 @@ research-walk:
 research-verify:
 	@chmod +x scripts/build_research.sh
 	@./scripts/build_research.sh verify
+
+research-v2:
+	@chmod +x scripts/backtest_v2.sh
+	@./scripts/backtest_v2.sh
+
+research-v3:
+	@chmod +x scripts/backtest_v3.sh
+	@./scripts/backtest_v3.sh
+
+research-v4:
+	@chmod +x scripts/backtest_v4.sh
+	@./scripts/backtest_v4.sh
+
+research-v4-recent:
+	@chmod +x scripts/backtest_v4_recent.sh
+	@./scripts/backtest_v4_recent.sh
+
+research-v5-compare:
+	@chmod +x scripts/backtest_v5_compare.sh
+	@./scripts/backtest_v5_compare.sh
+
+research-verify-v2:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh verify-v2
+
+research-verify-v3:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh verify-v3
+
+psychology-demo:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh psychology
+
+fetch-news:
+	@chmod +x scripts/fetch_news_all.sh scripts/export_news_optional.py
+	@./scripts/fetch_news_all.sh
+
+extend-hist:
+	@chmod +x scripts/extend_hist_all.sh scripts/export_hist_extend_optional.py
+	@./scripts/extend_hist_all.sh
+
+news-embed:
+	@chmod +x scripts/news_to_embed.sh
+	@mkdir -p build
+	@./scripts/news_to_embed.sh research/archive/news_daily_eta.csv build/news_embed.ty $(or $(CODE),600519)
+
+news-demo: news-embed
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh news
+
+fetch-ticks:
+	@chmod +x scripts/fetch_ticks_all.sh scripts/fetch_tick_eastmoney.sh
+	@./scripts/fetch_ticks_all.sh
+
+fetch-ticks-tdx:
+	@chmod +x scripts/fetch_ticks_tdx_all.sh scripts/fetch_tick_tdx_optional.py scripts/prune_tick_hist.sh
+	@./scripts/fetch_ticks_tdx_all.sh $(or $(YEAR),2026)
+
+tick-embed:
+	@chmod +x scripts/tick_to_embed.sh
+	@mkdir -p build
+	@./scripts/tick_to_embed.sh research/archive/tick_daily_summary.csv build/tick_embed.ty $(or $(CODE),600519)
+
+tick-demo: tick-embed
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh tick
+
+butterfly-demo:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh butterfly
+
+hold-ratio:
+	@chmod +x scripts/build_research.sh
+	@./scripts/build_research.sh hold

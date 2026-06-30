@@ -1,0 +1,22 @@
+{
+  "version": "v3",
+  "generated_at": "2026-06-29T14:56:40Z",
+  "engine": "scripts/backtest_v3.awk (yoyo 6-vote + psych + wuwen)",
+  "n_stocks": 8,
+  "v3_mean_return": -0.141758,
+  "momentum_mean_return": -0.371574,
+  "meanrev_mean_return": -0.273101,
+  "buyhold_mean_return": -0.050521,
+  "v3_mean_sharpe": 0.257600,
+  "momentum_mean_sharpe": 0.219756,
+  "meanrev_mean_sharpe": 0.295019,
+  "v3_mean_mdd": -0.539095,
+  "v3_mean_hold_pct": 0.022023,
+  "v3_mean_wuwen_vote_pct": 10.808536,
+  "v3_mean_calm_market_pct": 0.413199,
+  "v3_mean_consensus_risk_pct": 0.586130,
+  "corr_signal_nextday_mean": 0.001774,
+  "v3_beats_momentum_count": 5,
+  "v3_beats_meanrev_count": 4,
+  "v3_beats_buyhold_count": 5
+}

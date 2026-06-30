@@ -10,9 +10,15 @@ ENTRY="$ROOT/yoyo/${NAME}.ty"
 mkdir -p "$ROOT/build"
 cat \
   "$ROOT/yoyo/lib/fp.ty" \
+  "$ROOT/yoyo/lib/params.ty" \
   "$ROOT/yoyo/lib/indicators.ty" \
-  "$ROOT/yoyo/lib/chart.ty" \
+  "$ROOT/yoyo/lib/perturbation.ty" \
+  "$ROOT/yoyo/lib/news_eta.ty" \
+  "$ROOT/yoyo/lib/psychology.ty" \
+  "$ROOT/yoyo/lib/aggressive.ty" \
+  "$ROOT/yoyo/lib/wuwen.ty" \
   "$ROOT/yoyo/ternary_signal.ty" \
+  "$ROOT/yoyo/lib/chart.ty" \
   "$ENTRY" \
   > "$OUT_TY"
 echo "Wrote $OUT_TY"

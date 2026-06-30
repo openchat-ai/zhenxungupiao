@@ -1,0 +1,21 @@
+{
+  "description": "文献锚点常量（非回测输出，供 params.ty / hold_ratio 对照）",
+  "sources_note": "详见 yoyo/docs/PRIOR-RESEARCH.md",
+  "strategy_hold_day_pct": 0.0176,
+  "strategy_hold_day_pct_note": "archive v1 四票，research/archive/backtest_summary.json",
+  "barber_odean_2000_turnover_penalty_annual": 0.047,
+  "barber_odean_note": "最高换手五分位比最低五分位年化收益低约4.7个百分点",
+  "odean_1998_inactive_accounts_us": 0.36,
+  "odean_note": "样本中约36%账户在一年内无卖出（美国散户）",
+  "china_retail_low_turnover_accounts_pct": 0.46,
+  "china_retail_note": "中证登近年口径：约四成至半数个人账户年换手偏低/休眠代理",
+  "lsv_1992_herding": "机构羊群可测，价量一致≠所有人同向",
+  "banerjee_1992_herd": "信息瀑布：忽略私讯跟随众人",
+  "shiller_2019_narrative": "叙事传染可阶段性同步风险偏好",
+  "fama_1970_emh": "弱式有效：简单技术信号 corr≈0 不矛盾",
+  "kahneman_tversky_1979": "损失厌恶→跌时一致卖压放大",
+  "lorenz_1963": "敏感依赖：小扰动→路径分叉（η层）",
+  "wuwen_vote_pct_typical_calm": 60,
+  "wuwen_vote_pct_typical_shock": 20,
+  "wuwen_note": "hold_ratio.ty 演示：平淡市五票中约60%持票，急涨时约20%"
+}

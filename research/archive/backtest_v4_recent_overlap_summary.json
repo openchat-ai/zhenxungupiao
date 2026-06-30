@@ -1,0 +1,18 @@
+{
+  "version": "v4_recent",
+  "generated_at": "2026-06-29T16:20:58Z",
+  "date_from": "2025-01-01",
+  "date_to": "2026-12-31",
+  "overlap_only": 1,
+  "n_stocks": 8,
+  "v4_mean_return": -0.083962,
+  "momentum_mean_return": -0.122567,
+  "meanrev_mean_return": -0.047254,
+  "buyhold_mean_return": -0.156974,
+  "v4_mean_sharpe": -1.483555,
+  "corr_signal_nextday_mean": -0.025744,
+  "tick_coverage_mean_pct": 1.000000,
+  "news_coverage_mean_pct": 0.000000,
+  "v4_beats_momentum_count": 6,
+  "v4_beats_buyhold_count": 6
+}

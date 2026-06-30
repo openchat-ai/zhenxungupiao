@@ -1,4 +1,7 @@
-# 平衡三进制策略实证回测报告
+# 平衡三进制策略实证回测报告（archive v1）
+
+> **版本说明**：本报告为 **四票技术面** 回测，**未含时事扰动 η**。  
+> v2 五票（`lib/perturbation.ty`）全量重算待 yoyo 读 CSV；逻辑演示：`make butterfly-demo`。
 
 - 生成时间: 2026-06-29T14:09:10.649859Z
 - 数据: AkShare stock_zh_a_hist (qfq)
