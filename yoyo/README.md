@@ -19,6 +19,7 @@ make stock     # → build/stock_app.exe（合并 lib/ + 主程序）
 | `lib/indicators.ty` | 技术指标投票 |
 | `compiler/yoyo.exe` | 官方自托管编译器 |
 | `docs/PHASE2-FLOAT.md` | 浮点 opcode `0x90`–`0x9F` 规范 |
+| `docs/THEORY-TERNARY-METAPHYSICS.md` | 三进制 × 股票预测 × 震巽玄学理论 |
 
 ## 零依赖
 

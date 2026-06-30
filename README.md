@@ -18,6 +18,10 @@ make stock-gui-elf  # ELF 版
 
 Linux 需 Wine 运行 `yoyo.exe`。
 
+## 理论
+
+《[三进制与股票预测的玄学关系](yoyo/docs/THEORY-TERNARY-METAPHYSICS.md)》——震巽、平衡三进制 (−1,0,+1)、四指标投票与易经象数的对应。
+
 ## 目录
 
 ```
