@@ -13,10 +13,9 @@ interface Props {
 
 /** 单只股票的整屏卡片：股票代码 + K 线 + 唯一买卖信号。 */
 export function StockCard({ stock, isFavorite, onToggleFavorite }: Props) {
-  const { signals, trit, buyIndex, sellIndex, votes, macd, rsi } = useMemo(() => {
+  const { trit, buyIndex, sellIndex, votes, macd, rsi } = useMemo(() => {
     const a = analyzeCandles(stock.candles);
     return {
-      signals: a.signals,
       votes: a.votes,
       macd: a.macd,
       rsi: a.rsi,
@@ -66,7 +65,7 @@ export function StockCard({ stock, isFavorite, onToggleFavorite }: Props) {
       <SignalBadge trit={trit} />
 
       <div className="hint">
-        长按代码收藏 · 上下滑翻股票 · 左滑全部 / 右滑收藏 · 共 {signals.length} 根 K 线
+        长按代码收藏 · 上下滑翻股票 · 左滑全部 / 右滑收藏 · 紫买绿卖指标在 K 线下方
       </div>
     </div>
   );

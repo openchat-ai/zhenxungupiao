@@ -29,7 +29,7 @@ yoyo 是一门**专为编写自托管编译器**而设计的极小语言（Phase
 - 只有整数状态数组，**没有浮点 / 字符串 / 文件 IO / GUI**；
 - 产物是 **Windows x86_64 PE**，本机（Linux）需 wine 才能执行，且 Phase-1 程序固定 `ExitProcess(0)`，没有可观测输出。
 
-因此 K 线绘制、手势、收藏等界面逻辑由可运行的 Web 技术（Vite + React + TypeScript）实现，
+因此 K 线绘制、手势、收藏等**手机 App 界面**由 Capacitor + React 实现（可安装到 Android / iOS），
 而**三进制决策这层纯整数逻辑**用 yoyo 真实编写并由 `yoyo.exe` 编译。
 `ternary_signal.ty` 与 `src/ternary.ts` 中的 `analyzeCandles` 一一对应
 （trit 无符号编码 0/1/2 ↔ 平衡三进制 -1/0/+1，`sum` 与中性值 4 比较）。
