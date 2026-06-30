@@ -1,29 +1,48 @@
 #!/bin/sh
-# 直接用 yoyo.exe 编译 — 不依赖 make
-# 用法: ./scripts/compile.sh <target>
-# 例:   ./scripts/compile.sh flow_signal
+# 编译 .ty → 可执行文件
+# Linux:  build/tyrun（原生 ELF）
+# Windows: yoyo/compiler/yoyo.exe（原生 PE）
+#
+# 用法: ./scripts/compile.sh flow_signal
 #       ./scripts/compile.sh signal
 set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 YOBO="${YOBO:-$ROOT/yoyo/compiler/yoyo.exe}"
+TYRUN="$ROOT/build/tyrun"
 BUILD="$ROOT/build"
 mkdir -p "$BUILD"
 
-run_yoyo() {
+ensure_tyrun() {
+  if [ ! -x "$TYRUN" ] || [ "$ROOT/yoyo/compiler/tyrun.c" -nt "$TYRUN" ]; then
+    echo "gcc -O2 -o build/tyrun yoyo/compiler/tyrun.c"
+    gcc -O2 -o "$TYRUN" "$ROOT/yoyo/compiler/tyrun.c"
+  fi
+}
+
+try_yoyo_exe() {
   SRC="$1"
   OUT="$2"
-  if [ ! -f "$YOBO" ]; then
-    echo "error: $YOBO not found" >&2
-    exit 1
-  fi
+  if [ ! -f "$YOBO" ]; then return 1; fi
   chmod +x "$YOBO" 2>/dev/null || true
-  echo "yoyo.exe $SRC $OUT"
   if command -v wine >/dev/null 2>&1; then
-    wine "$YOBO" "$SRC" "$OUT"
-  else
-    "$YOBO" "$SRC" "$OUT"
+    if WINEDEBUG=-all wine "$YOBO" "$SRC" "$OUT" 2>/dev/null && [ -f "$OUT" ]; then
+      echo "OK $OUT (yoyo.exe via Wine)"
+      return 0
+    fi
+  elif "$YOBO" "$SRC" "$OUT" 2>/dev/null && [ -f "$OUT" ]; then
+    echo "OK $OUT (yoyo.exe native)"
+    return 0
   fi
-  echo "OK $OUT"
+  return 1
+}
+
+run_ty() {
+  SRC="$1"
+  OUT="$2"
+  if try_yoyo_exe "$SRC" "$OUT"; then return 0; fi
+  ensure_tyrun
+  echo "tyrun -o $OUT $SRC"
+  "$TYRUN" -o "$OUT" "$SRC"
 }
 
 RESEARCH_LIBS="
@@ -45,20 +64,19 @@ case "$TARGET" in
   signal)
     SRC="$BUILD/ternary_signal.ty"
     cat $RESEARCH_LIBS > "$SRC"
-    run_yoyo "$SRC" "$BUILD/ternary_signal.exe"
+    run_ty "$SRC" "$BUILD/ternary_signal.exe"
     ;;
   stock)
     SRC="$BUILD/stock_app.ty"
     cat $RESEARCH_LIBS "$ROOT/yoyo/lib/chart.ty" "$ROOT/yoyo/stock_app.ty" > "$SRC"
-    run_yoyo "$SRC" "$BUILD/stock_app.exe"
+    run_ty "$SRC" "$BUILD/stock_app.exe"
     ;;
   stock_gui)
     SRC="$BUILD/stock_gui.ty"
     cat $RESEARCH_LIBS "$ROOT/yoyo/lib/chart.ty" "$ROOT/yoyo/stock_gui.ty" > "$SRC"
-    run_yoyo "$SRC" "$BUILD/stock_gui.exe"
+    run_ty "$SRC" "$BUILD/stock_gui.exe"
     ;;
   flow_signal)
-    # 先写入逐笔数据（可用 ./scripts/flow_to_embed.sh 单独跑）
     if [ ! -f "$BUILD/flow_embed.ty" ]; then
       chmod +x "$ROOT/scripts/flow_to_embed.sh" 2>/dev/null || true
       "$ROOT/scripts/flow_to_embed.sh" \
@@ -72,7 +90,8 @@ case "$TARGET" in
       "$ROOT/yoyo/lib/flow_signal.ty" \
       "$BUILD/flow_embed.ty" \
       "$ROOT/yoyo/research/flow_signal_demo.ty" > "$SRC"
-    run_yoyo "$SRC" "$BUILD/flow_signal_demo.exe"
+    run_ty "$SRC" "$BUILD/flow_signal_demo.exe"
+    [ -x "$BUILD/flow_signal_demo" ] && echo "also: $BUILD/flow_signal_demo (Linux ELF)"
     ;;
   tick_demo)
     if [ ! -f "$BUILD/tick_embed.ty" ]; then
@@ -83,49 +102,41 @@ case "$TARGET" in
     fi
     SRC="$BUILD/tick_demo.ty"
     cat $RESEARCH_LIBS "$BUILD/tick_embed.ty" "$ROOT/yoyo/research/tick_demo.ty" > "$SRC"
-    run_yoyo "$SRC" "$BUILD/tick_demo.exe"
+    run_ty "$SRC" "$BUILD/tick_demo.exe"
     ;;
-  butterfly)
-    SRC="$BUILD/butterfly_demo.ty"
-    cat $RESEARCH_LIBS "$ROOT/yoyo/research/butterfly_demo.ty" > "$SRC"
-    run_yoyo "$SRC" "$BUILD/butterfly_demo.exe"
-    ;;
-  psychology)
-    SRC="$BUILD/psychology_demo.ty"
-    cat $RESEARCH_LIBS "$ROOT/yoyo/research/psychology_demo.ty" > "$SRC"
-    run_yoyo "$SRC" "$BUILD/psychology_demo.exe"
-    ;;
-  walk)
-    SRC="$BUILD/walk_forward.ty"
-    cat $RESEARCH_LIBS "$ROOT/yoyo/research/walk_forward.ty" > "$SRC"
-    run_yoyo "$SRC" "$BUILD/walk_forward.exe"
+  butterfly|psychology|walk)
+    case "$TARGET" in
+      butterfly) E="$ROOT/yoyo/research/butterfly_demo.ty"; O="$BUILD/butterfly_demo" ;;
+      psychology) E="$ROOT/yoyo/research/psychology_demo.ty"; O="$BUILD/psychology_demo" ;;
+      walk) E="$ROOT/yoyo/research/walk_forward.ty"; O="$BUILD/walk_forward" ;;
+    esac
+    SRC="$O.ty"
+    cat $RESEARCH_LIBS "$E" > "$SRC"
+    run_ty "$SRC" "$O.exe"
     ;;
   custom)
-    # ./scripts/compile.sh custom build/my_app.ty build/my_app.exe
-    SRC="${1:?need source .ty}"; OUT="${2:?need output .exe}"
-    run_yoyo "$SRC" "$OUT"
+    SRC="${1:?need source .ty}"; OUT="${2:?need output path}"
+    run_ty "$SRC" "$OUT"
+    ;;
+  tyrun)
+    ensure_tyrun
+    echo "OK $TYRUN"
     ;;
   *)
     cat <<EOF
 用法: ./scripts/compile.sh <target>
 
-目标（合并 lib 后调用 yoyo.exe）:
-  signal        七票决策核心 → build/ternary_signal.exe
-  stock         App 主程序   → build/stock_app.exe
-  stock_gui     GUI 版       → build/stock_gui.exe
-  flow_signal   逐笔买/卖指示 → build/flow_signal_demo.exe
-  tick_demo     第 7 票演示  → build/tick_demo.exe
-  butterfly     蝴蝶效应演示
-  psychology    心理学票演示
-  walk          五票 walk-forward
-  custom <in.ty> <out.exe>  已合并好的 .ty 直接编译
+  flow_signal   逐笔买/卖指示
+  signal        七票决策核心
+  stock         App 主程序
+  stock_gui     GUI 版
+  tick_demo     第 7 票演示
+  butterfly / psychology / walk
+  tyrun         仅构建 Linux 原生 tyrun
+  custom <in.ty> <out>
 
-环境变量:
-  YOBO=/path/yoyo.exe   编译器路径（默认 yoyo/compiler/yoyo.exe）
-  CODE=600036           flow_signal / tick_demo 嵌入哪只股票
-
-等价于（Windows 本机）:
-  yoyo\\compiler\\yoyo.exe build\\flow_signal_demo.ty build\\flow_signal_demo.exe
+Linux  : tyrun → 原生 ELF（build/flow_signal_demo）
+Windows: yoyo.exe → 原生 PE（build/flow_signal_demo.exe）
 EOF
     exit 1
     ;;
