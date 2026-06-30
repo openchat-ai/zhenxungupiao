@@ -1,5 +1,10 @@
 ; flow_signal_demo — 逐笔买入/卖出指示
-; make flow-embed CODE=600036 && make flow-signal-demo
+;
+; 编译（不用 make）:
+;   ./scripts/flow_to_embed.sh research/archive/tick_features_daily.csv build/flow_embed.ty 600036
+;   cat yoyo/lib/fp.ty yoyo/lib/params.ty yoyo/lib/flow_signal.ty build/flow_embed.ty yoyo/research/flow_signal_demo.ty > build/flow_signal_demo.ty
+;   yoyo/compiler/yoyo.exe build/flow_signal_demo.ty build/flow_signal_demo.exe
+; 或: ./scripts/compile.sh flow_signal
 
 41 E8
 FF
