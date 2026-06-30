@@ -1,14 +1,17 @@
 # yoyo.exe — 官方三进制自托管编译器
 
-来源：[openchat-ai/yoyo-ide](https://github.com/openchat-ai/yoyo-ide) `build/yoyo.exe`
+来源：[openchat-ai/yoyo-ide](https://github.com/openchat-ai/yoyo-ide) `projects/yoyo.ty` + `build/yoyo.exe`
 
-- **不是 JavaScript**，是 PE32+ x86_64 原生可执行文件
-- **零依赖**：无 CRT、无 Node、无第三方库
-- 将 `.ty` 编译为 Windows 原生程序；多平台后端见 `docs/ROADMAP.md`
+- **yoyo.ty**：与 upstream **同步**（2033 行，含 `0x82` JL / `0x83` JG + `H_9C` generic jcc）
+- **yoyo.exe**：upstream 最新 PE（87040 B）
+- **震巽扩展**：`patches/` Phase 2–4（float / ELF / GUI）经 `merge_compiler.sh` 合并
 
 ```bash
+# Windows 本机
 yoyo.exe input.ty output.exe
-# 或：make stock
+
+# Linux：优先 build/tyrun（原生 ELF）
+./scripts/compile.sh flow_signal
 ```
 
-Linux/macOS 需 Wine 运行本二进制。
+应用层跳转请用 **`82` JL / `83` JG**（见 yoyo-ide `docs/MANUAL.md`），**勿用 `73`/`76`**（编译器内部编号）。

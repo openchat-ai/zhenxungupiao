@@ -9,6 +9,16 @@
 
 `make` 和 `compile.sh` 都是**合并 .ty + 调编译器**，不是必须。
 
+### 跳转 opcode（与 yoyo-ide 同步）
+
+| Opcode | 含义 |
+|--------|------|
+| `71` | JE |
+| **`82`** | **JL**（`<`） |
+| **`83`** | **JG**（`>`） |
+
+勿用 `73`/`76`（编译器内部编号）。详见 [yoyo-ide MANUAL](https://github.com/openchat-ai/yoyo-ide/blob/main/docs/MANUAL.md)。
+
 ---
 
 ## flow 买入/卖出指示（推荐）

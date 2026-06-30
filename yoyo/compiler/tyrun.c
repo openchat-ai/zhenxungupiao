@@ -18,7 +18,7 @@
 
 typedef enum {
     OP_SET, OP_LABEL, OP_CALL, OP_COPY, OP_CMP, OP_INC,
-    OP_ADDV, OP_SUBV, OP_JMP, OP_JE, OP_JNE, OP_JLE, OP_JGE,
+    OP_ADDV, OP_SUBV, OP_JMP, OP_JE, OP_JNE, OP_JL, OP_JG,
     OP_JB, OP_JAE, OP_JA, OP_RET
 } OpKind;
 
@@ -108,10 +108,10 @@ static void parse_line(char *line, Handler **cur) {
         in.k = OP_JE; strncpy(in.lbl, tok[1], sizeof(in.lbl) - 1);
     } else if (op == 0x72 && nt >= 2) {
         in.k = OP_JNE; strncpy(in.lbl, tok[1], sizeof(in.lbl) - 1);
-    } else if (op == 0x73 && nt >= 2) {
-        in.k = OP_JLE; strncpy(in.lbl, tok[1], sizeof(in.lbl) - 1);
-    } else if (op == 0x76 && nt >= 2) {
-        in.k = OP_JGE; strncpy(in.lbl, tok[1], sizeof(in.lbl) - 1);
+    } else if (op == 0x82 && nt >= 2) {
+        in.k = OP_JL; strncpy(in.lbl, tok[1], sizeof(in.lbl) - 1);
+    } else if (op == 0x83 && nt >= 2) {
+        in.k = OP_JG; strncpy(in.lbl, tok[1], sizeof(in.lbl) - 1);
     } else if (op == 0x77 && nt >= 2) {
         in.k = OP_JB; strncpy(in.lbl, tok[1], sizeof(in.lbl) - 1);
     } else if (op == 0x78 && nt >= 2) {
@@ -143,8 +143,8 @@ static int jump_cond(Ins *in) {
     switch (in->k) {
     case OP_JE: return cmpf == 0;
     case OP_JNE: return cmpf != 0;
-    case OP_JLE: return cmpf <= 0;
-    case OP_JGE: return cmpf >= 0;
+    case OP_JL: return cmpf < 0;
+    case OP_JG: return cmpf > 0;
     case OP_JB: return cmpf < 0;
     case OP_JAE: return cmpf >= 0;
     case OP_JA: return cmpf > 0;
@@ -177,7 +177,7 @@ static int run_at(Handler *h, int ip) {
             if (run_handler(c)) return 1;
             break;
         }
-        case OP_JMP: case OP_JE: case OP_JNE: case OP_JLE: case OP_JGE:
+        case OP_JMP: case OP_JE: case OP_JNE: case OP_JL: case OP_JG:
         case OP_JB: case OP_JAE: case OP_JA:
             if (jump_cond(in)) return run_handler(hget(in->lbl));
             break;
