@@ -16,4 +16,8 @@ package-lock.json
 
 # 回测原始日线缓存（可本地再生）
 research/output/
+
+# 横截面面板（可由 make research-xsec 从 archive 再生，体积大）
+research/panel/panel_*.csv
+research/panel/reb_*.txt
 *.tsbuildinfo

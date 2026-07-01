@@ -157,9 +157,9 @@ IR ≈ IC × √breadth
 
 | 层 | 落地 |
 |----|------|
-| 研究引擎 | 沿用纯 awk：把 `backtest_oos.awk` 从**单股时序**升级到**横截面**（每期跨股票排序、算 IC/ICIR） |
-| 防泄漏 | 在 shell 编排 walk-forward + purge/embargo；DSR/PBO 用 awk 数值实现 |
-| 因子库 | 新增 `scripts/factors/*.awk`，每因子一文件，输出点时因子面板 |
+| 研究引擎 | ✅ 纯 awk：单股时序 `backtest_oos.awk`；**横截面** `backtest_xsec.awk`（每期跨股票排序、算 rank-IC/ICIR + 多空/多头超额，`make research-xsec`） |
+| 防泄漏 | 🟡 非重叠 h 日采样（reb 列表）已防前瞻/重叠；DSR/PBO 待用 awk 数值实现 |
+| 因子库 | ✅ 起步 `scripts/panel_features.awk`（点时 mom/rev/vol/turn）；后续按因子扩展并接基本面 |
 | 运行时 | 定稿信号再用 `yoyo.exe` 编译为原生产物（`scripts/compile.sh`），研究与运行时解耦 |
 | 数据 | 扩池脚本（点时成分 + 复权 + QA），产物进 `research/panel/`（不覆盖既有 archive） |
 
@@ -167,15 +167,15 @@ IR ≈ IC × √breadth
 
 ## 十、里程碑（按技术范围划分，非日历）
 
-| 里程碑 | 交付物 | 完成判据 |
-|--------|--------|---------|
-| **M1 数据面板** | 点时、无幸存者偏差的多股价量+基本面面板 + QA 门 | QA 全绿；可复现成分历史 |
-| **M2 横截面 IC 引擎** | `backtest_xsec.awk`：每期 IC/ICIR，多因子 | 复现单因子已知异象方向 |
-| **M3 成本/容量** | 参与率相关冲击模型 + 容量曲线 | 净 IR 对成本敏感性稳健 |
-| **M4 防过拟合** | walk-forward + purge/embargo + DSR + PBO | 报告含 N、DSR、PBO |
-| **M5 组合与风控** | 中性化组合 + 回撤熔断 + 归因 | 通过 Gate A |
-| **M6 纸面前瞻** | 冻结参数前瞻跟踪 | 通过 Gate B |
-| **M7 实盘小资金** | 上线 + 监控 + 扩容/叫停规则 | 通过 Gate C |
+| 里程碑 | 交付物 | 完成判据 | 状态 |
+|--------|--------|---------|------|
+| **M1 数据面板** | 点时、无幸存者偏差的多股价量+基本面面板 + QA 门 | QA 全绿；可复现成分历史 | 🟡 管线就位（`panel_features.awk` 点时特征）；**待扩池**到数百只点时成分（当前 archive 仅 8 只，需联网抓取，见 `TICK-DATA-SOURCES.md`） |
+| **M2 横截面 IC 引擎** | `backtest_xsec.awk`：每期 IC/ICIR，多因子 | 复现单因子已知异象方向 | 🟢 已实现（`make research-xsec`）：`mom` 横截面 IC 方向为正（IS +0.028 → OOS +0.069），与文献一致；但广度=8 → IC t=1.55 未过多重检验（符合预期，需 M1 扩池） |
+| **M3 成本/容量** | 参与率相关冲击模型 + 容量曲线 | 净 IR 对成本敏感性稳健 | ⬜ 未开始（现为保守常数成本 买0.075%/卖0.125%） |
+| **M4 防过拟合** | walk-forward + purge/embargo + DSR + PBO | 报告含 N、DSR、PBO | 🟡 部分（非重叠采样 + 多重检验；DSR/PBO 待补） |
+| **M5 组合与风控** | 中性化组合 + 回撤熔断 + 归因 | 通过 Gate A | ⬜ 未开始 |
+| **M6 纸面前瞻** | 冻结参数前瞻跟踪 | 通过 Gate B | ⬜ 未开始 |
+| **M7 实盘小资金** | 上线 + 监控 + 扩容/叫停规则 | 通过 Gate C | ⬜ 未开始 |
 
 ---
 
