@@ -26,9 +26,13 @@ Below are only the non-obvious caveats discovered during setup.
 ### Wine / yoyo.exe compiler caveats (important)
 
 - Wine is required to *execute* `yoyo/compiler/yoyo.exe` (a committed PE32+ x86-64
-  binary) on Linux; it is provided by the VM snapshot (installed via `apt`, not the
-  update script). Verify with `wine --version`. The prefix at `~/.wine` is already
-  initialized.
+  binary) on Linux. It is **not guaranteed to be preinstalled** on a fresh VM (verify
+  with `wine --version`; `~/.wine` may be absent) and it is **not part of the update
+  script** (it's a system dependency). Crucially, you do **not** need Wine to run/demo
+  the working part of this repo — the pure-`awk` backtest engine below is fully
+  self-contained. Installing Wine only lets you reproduce the documented `Error 5`
+  failure of the stub compiler (see next bullet), so it is optional. If you do need it,
+  install via `apt` and let it initialize `~/.wine` on first run.
 - **The committed `yoyo.exe` is a fixed-output bootstrap stub, not a working
   compiler.** Empirically it: ignores its command-line arguments, reads a hardcoded
   `input.ky` from the current directory, always writes a **constant** `output.exe`
