@@ -36,6 +36,7 @@ Linux 需 Wine 运行 `yoyo.exe`。
 ## 理论
 
 - **[结论一览（推荐先读）](结论.md)** — 实证数字 + 集体一致 + 无问占比参数  
+- **[实战级信号规范 SPEC-REALTRADE](yoyo/docs/SPEC-REALTRADE.md)** — 「达到实战」的可复现验收线；诚实基线 `make research-oos`  
 - **[前人研究与参数依据](yoyo/docs/PRIOR-RESEARCH.md)** — Fama / Banerjee / Barber-Odean 等  
 - **[经典量化策略](yoyo/docs/QUANT-STRATEGIES.md)** — 动量 / 均值回归为何能赚钱  
 - **[逐笔数据来源](yoyo/docs/TICK-DATA-SOURCES.md)** — 东财 push2 已接入，`make fetch-ticks`
