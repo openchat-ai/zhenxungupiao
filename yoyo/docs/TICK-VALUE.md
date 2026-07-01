@@ -147,6 +147,18 @@ state[22] 日频决策
 
 见 [`research/archive/BACKTEST_V5_COMPARE_REPORT.md`](../../research/archive/BACKTEST_V5_COMPARE_REPORT.md)
 
+### v6 多维特征（`make research-v6-compare`）
+
+| 模式 | corr→次日 | 说明 |
+|------|-----------|------|
+| **flow_pure** | **+0.035** ✅ | 首个过 IC>0.03 的日频指示 |
+| chg_pure | +0.025 | flow 日变化；corr→跳空 **+0.050** |
+| v4 七票 | −0.026 | 基线 |
+
+**实操**：用 `flow_pure` 作纯指示，不必叠七票；代码见 `yoyo/lib/flow_signal.ty`。
+
+见 [`research/archive/BACKTEST_V6_COMPARE_REPORT.md`](../../research/archive/BACKTEST_V6_COMPARE_REPORT.md)
+
 过不了 → **不买**。
 
 ---

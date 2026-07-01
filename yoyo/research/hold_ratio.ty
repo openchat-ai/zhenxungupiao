@@ -41,7 +41,7 @@ FF
 60 50 41
 60 51 40
 65 50 51
-76 no_flip
+83 no_flip
 30 42 01
 FF
 40 no_flip
@@ -52,7 +52,7 @@ FF
 60 50 31
 60 51 07
 65 50 51
-76 anchor_ok
+83 anchor_ok
 30 45 00
 FF
 40 anchor_ok

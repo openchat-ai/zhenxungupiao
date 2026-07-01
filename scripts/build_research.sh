@@ -60,6 +60,15 @@ case "$NAME" in
         "$ROOT/build/news_embed.ty" \
         "$ROOT/yoyo/research/news_demo.ty" > "$SRC"
     ;;
+  flow)
+    SRC="$ROOT/build/flow_signal_demo.ty"
+    OUT="$ROOT/build/flow_signal_demo.exe"
+    cat "$ROOT/yoyo/lib/fp.ty" \
+        "$ROOT/yoyo/lib/params.ty" \
+        "$ROOT/yoyo/lib/flow_signal.ty" \
+        "$ROOT/build/flow_embed.ty" \
+        "$ROOT/yoyo/research/flow_signal_demo.ty" > "$SRC"
+    ;;
   verify-v3)
     SRC="$ROOT/build/verify_v3.ty"
     OUT="$ROOT/build/verify_v3.exe"
@@ -71,7 +80,7 @@ case "$NAME" in
     cp "$ROOT/yoyo/research/verify_v2.ty" "$SRC"
     ;;
   *)
-    echo "usage: $0 {walk|butterfly|hold|psychology|tick|news|verify|verify-v2|verify-v3}"
+    echo "usage: $0 {walk|butterfly|hold|psychology|tick|news|flow|verify|verify-v2|verify-v3}"
     exit 1
     ;;
 esac

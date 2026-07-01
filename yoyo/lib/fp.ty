@@ -30,7 +30,7 @@ FF
 71 6A           ; je done if divisor==0
 40 68           ; div_loop
 65 51 52        ; cmp dividend, divisor
-73 6A           ; jl done
+82 6A           ; jl done
 69 51 52        ; dividend -= divisor
 66 50           ; quotient++
 70 68           ; loop

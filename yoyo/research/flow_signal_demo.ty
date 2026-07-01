@@ -1,0 +1,9 @@
+; flow_signal_demo — 逐笔买入/卖出指示
+;
+; 编译:
+;   ./scripts/compile.sh flow_signal
+;   ./build/flow_signal_demo              # Linux ELF (tyrun)
+;   build/flow_signal_demo.exe            # Windows (yoyo.exe)
+
+41 E8
+FF

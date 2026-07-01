@@ -1,27 +1,26 @@
 ; ==============================================================================
 ;  aggressive.ty — 第 7 票：逐笔主动买卖占比（纯 yoyo）
 ; ------------------------------------------------------------------------------
-;  输入 state[50]：主动买笔数占比 %（0–100），由 tick 日汇总写入
-;    见 scripts/fetch_ticks_all.sh → tick_daily_summary.csv
-;         scripts/tick_to_embed.sh  → build/tick_embed.ty
-;
 ;  规则（params[0B]/[0C]）：
 ;    主动买% >= [0B]（默认 55）→  trit 2 买
 ;    主动买% <= [0C]（默认 45）→  trit 0 卖
 ;    否则                      →  trit 1 持
-;
-;  东财分笔 bs：1=主动买 2=主动卖（见 docs/TICK-DATA-SOURCES.md）
+;  跳转 opcode：82 JL / 83 JG（yoyo-ide MANUAL）
 ;  H_D3  vote_aggressive
 ; ==============================================================================
 
 40 D3
 60 50 32
 60 51 0B
+30 54 01
+69 51 54
 65 50 51
-76 ag_buy
+83 ag_buy
 60 51 0C
+30 54 01
+68 51 54
 65 50 51
-73 ag_sell
+82 ag_sell
 30 10 01
 FF
 40 ag_buy

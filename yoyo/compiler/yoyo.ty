@@ -287,8 +287,25 @@
 40 4a
 30 41 71
 65 40 41
+72 9e
+30 f0 84
+41 9c  ; opcode 0x71: emit JE via generic jcc
+70 4c
+
+40 9e
+30 41 82
+65 40 41
+72 9f
+30 f0 8c
+41 9c  ; opcode 0x82: emit JL via generic jcc
+70 4c
+
+40 9f
+30 41 83
+65 40 41
 72 4b
-41 38  ; opcode 0x71: emit JE rel32
+30 f0 8f
+41 9c  ; opcode 0x83: emit JG via generic jcc
 70 4c
 
 40 4b
@@ -863,6 +880,40 @@ FF
 30 45 0f
 41 e0
 30 45 84
+41 e0
+41 e6
+30 45 00
+57 03 0E 45
+66 0e
+57 03 0E 45
+66 0e
+57 03 0E 45
+66 0e
+57 03 0E 45
+66 0e
+FF
+
+; H_9C: generic jcc rel32 emitter (state_F0 = x86 cond byte, 0x84/0x85/0x8C/0x8D/0x8E/0x8F/...)
+40 9c
+41 e7
+30 41 00
+65 4d 41
+71 9d
+30 45 0f
+41 e0
+60 45 f0
+41 e0
+60 4e 0e
+61 4e 04
+69 4d 4e
+41 e5
+FF
+
+; H_9D: forward generic jcc - emit 0F + cond placeholder and record fixup
+40 9d
+30 45 0f
+41 e0
+60 45 f0
 41 e0
 41 e6
 30 45 00

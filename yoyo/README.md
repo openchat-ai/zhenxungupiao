@@ -2,12 +2,29 @@
 
 见 `docs/ROADMAP.md`。本目录全部用 **yoyo 语言**（`.ty`）编写，由 `compiler/yoyo.exe` 编译。
 
-## 编译
+## 编译（直接 yoyo.exe，不用 make）
 
 ```bash
-make signal    # → build/ternary_signal.exe
-make stock     # → build/stock_app.exe（合并 lib/ + 主程序）
+# 推荐：合并 + 编译一条脚本
+./scripts/compile.sh signal          # → build/ternary_signal.exe
+./scripts/compile.sh stock           # → build/stock_app.exe
+./scripts/compile.sh flow_signal     # → build/flow_signal_demo.exe
+
+# 或手敲（Windows）
+yoyo/compiler/yoyo.exe build/flow_signal_demo.ty build/flow_signal_demo.exe
 ```
+
+合并规则与 lib 顺序见 [`docs/COMPILE.md`](docs/COMPILE.md)。
+
+<details><summary>仍可用 make（薄封装，非必须）</summary>
+
+```bash
+make signal
+make stock
+make flow-signal-demo
+```
+
+</details>
 
 ## 文件
 
