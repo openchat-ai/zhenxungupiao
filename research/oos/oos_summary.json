@@ -1,0 +1,15 @@
+{
+  "version": "oos_honest_v1",
+  "generated_at": "2026-07-01T22:35:16Z",
+  "split_date": "2024-01-01",
+  "n_tests_family": 16,
+  "bonferroni_crit_t": 2.955,
+  "cost_buy": 0.00075, "cost_sell": 0.00125,
+  "oos_net": {
+    "v4":  {"mean_return": 0.031095,  "mean_sharpe": 0.050090,  "pooled_ic": 0.006371,  "t": 0.4413,  "p": 0.658976},
+    "mom": {"mean_return": 0.026168, "mean_sharpe": -0.078884, "pooled_ic": 0.006890, "t": 0.4772, "p": 0.633197},
+    "mr":  {"mean_return": 0.118907,  "mean_sharpe": 0.246613,  "pooled_ic": -0.002639,  "t": -0.1828,  "p": 0.854970},
+    "bh":  {"mean_return": 0.165187,  "mean_sharpe": 0.253867}
+  },
+  "verdict": "No signal is production-grade: OOS net-of-cost returns and Sharpe trail buy-and-hold; all IC t-stats < 0.6 (below even the naive 1.96, far below Bonferroni 2.955)."
+}
